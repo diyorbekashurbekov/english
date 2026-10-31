@@ -347,6 +347,23 @@
         }, 900);
         return true;
       }
+      if (k === T.length && G.S.students.length) {
+        k++;
+        const top = G.S.students.slice().sort((a, b) => (b.stars || 0) - (a.stars || 0)).slice(0, 3);
+        rows.innerHTML = ''; final.innerHTML = '';
+        const order = [top[1], top[0], top[2]], hts = ['150px', '210px', '110px'], pl = [2, 1, 3];
+        final.append(h('div', { class: 'eyebrow', style: { animation: 'rise .8s var(--ease) both' } }, '⭐ Сабақтың MVP-лері'),
+          h('div', { class: 'podium', style: { marginTop: '16px' } }, order.map((s, n) => s ? h('div', { style: { animationDelay: [.6, 1.4, .2][n] + 's' } },
+            h('div', { style: { fontSize: '40px' } }, ['🥈', '🥇', '🥉'][n]),
+            h('div', { class: 'nm' }, s.name),
+            h('div', { style: { color: 'var(--moon-2)', fontWeight: 600 } }, '⭐ ' + (s.stars || 0)),
+            h('div', { class: 'blk', style: { height: hts[n] } }, pl[n])) : h('div'))),
+          h('div', { class: 'lede', style: { color: 'var(--moon-2)', marginTop: '18px', animation: 'rise 1s 2s var(--ease) both' } }, G.S.students.map(s => s.name).join(' · ')),
+          h('div', { class: 'headline', style: { color: 'var(--moon)', animation: 'rise 1s 2.4s var(--ease) both' } }, 'Thank you, ' + (G.S.group || 'everyone') + '!'));
+        G.sfx('drum'); setTimeout(() => { G.sfx('fanfare'); G.confetti(220); }, 1500);
+        api.hint('MVP — ең көп ⭐ жинаған оқушылар. Құттықтаймыз!');
+        return true;
+      }
       return false;
     }
     return { next: () => revealNext() };

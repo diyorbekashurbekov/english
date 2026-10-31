@@ -185,7 +185,7 @@
     blurb: 'Суперқаһармандар, дыбыс зертханасы және сыныптағы тікелей сауалнама. Біз не істей аламыз?',
     specs: { grammar: 'can / can\'t — қабілет · сұрақ және қысқа жауап · қаншалықты жақсы: a little bit, quite well, really well, brilliantly, fluently, not at all', words: 'swim, ski, cook, sing, ride a bike, play the guitar, speak a foreign language', skills: 'Тыңдау: /kən/ мен /kɑːnt/ айырмашылығы · Сөйлеу: сұхбат, сынып туралы есеп', games: 'Hero check · Sound lab · Сынып сауалнамасы · Power battle' },
     scenes: [
-      { type: 'film', dark: true, lines: ['Everyone has a superpower.', 'Some people can *fly*.', 'Some people can *read minds*.', 'What can *you* do?'], kicker: 'Lesson 1', title: 'Power.', sub: 'can · can\'t · how well', kk: 'Әр адамның бір күші бар. Бүгін — can: не істей аламыз?' },
+      { type: 'film', dark: true, roll: true, lines: ['Everyone has a superpower.', 'Some people can *fly*.', 'Some people can *read minds*.', 'What can *you* do?'], kicker: 'Lesson 1', title: 'Power.', sub: 'can · can\'t · how well', kk: 'Әр адамның бір күші бар. Бүгін — can: не істей аламыз?' },
       { type: 'explain', kicker: 'Grammar', title: 'Meet *can*.', beats: [
         { lines: ['I *can* fly.'], note: '*can* = ability. What you are able to do.', kk: 'can — «істей аламын». Қабілетті білдіреді.' },
         { lines: ['I *can* fly.', 'She *can* fly.', 'They *can* fly.'], note: '*can* never changes. No -s. No “to”.', kk: 'can ешқашан өзгермейді: she cans емес, can to fly емес.' },

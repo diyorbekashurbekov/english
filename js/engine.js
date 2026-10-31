@@ -62,7 +62,8 @@
   G.PRESETS = [['Lightning', '⚡', '#ff9f0a'], ['Phoenix', '🔥', '#ff375f'], ['Ocean', '🌊', '#0a84ff'], ['Forest', '🌿', '#30d158'], ['Galaxy', '🌌', '#bf5af2'], ['Comet', '☄️', '#64d2ff']];
   G.COLORS = ['#ff9f0a', '#ff375f', '#0a84ff', '#30d158', '#bf5af2', '#64d2ff', '#ffd60a', '#ac8e68'];
   G.EMOJI = ['⚡', '🔥', '🌊', '🌿', '🌌', '☄️', '🦅', '🐺', '🦁', '🐉', '🚀', '💎'];
-  const fresh = () => ({ group: '', size: 20, teams: G.PRESETS.slice(0, 4).map(([name, emoji, color]) => ({ name, emoji, color, score: 0 })), kk: true, sound: true, pos: {}, done: {} });
+  G.NAMES = ['Диярбек', 'Азиз', 'Кемеңгер', 'Амірхан', 'Алишер', 'Дархан', 'Жасулан', 'Димаш', 'Баха', 'Балауса', 'Аида', 'Қарақат', 'Жадыра'];
+  const fresh = () => ({ students: G.NAMES.map(name => ({ name, team: -1, stars: 0 })), group: '', size: 13, teams: G.PRESETS.slice(0, 4).map(([name, emoji, color]) => ({ name, emoji, color, score: 0 })), kk: true, sound: true, pos: {}, done: {} });
   function load() {
     try { const s = JSON.parse(localStorage.getItem(KEY) || 'null'); if (s && typeof s === 'object' && Array.isArray(s.teams) && s.teams.length) return Object.assign(fresh(), s); } catch (e) {}
     return fresh();
@@ -72,7 +73,54 @@
   G.setTeamCount = n => {
     const T = G.S.teams;
     while (T.length < n) { const p = G.PRESETS[T.length] || ['Team ' + (T.length + 1), '⭐', G.COLORS[T.length % G.COLORS.length]]; T.push({ name: p[0], emoji: p[1], color: p[2], score: 0 }); }
-    T.length = n; G.save();
+    T.length = n;
+    G.S.students.forEach(s => { if (s.team >= n) s.team = -1; });
+    G.save();
+  };
+  G.draft = () => {
+    const n = G.S.teams.length;
+    G.shuffle(G.S.students.map((s, i) => i)).forEach((i, k) => { G.S.students[i].team = k % n; });
+    G.save();
+  };
+  G.members = t => G.S.students.filter(s => s.team === t);
+
+  // Slot-machine name picker: "Who answers?"
+  G.lastPick = null;
+  let picking = false;
+  G.pickStudent = () => {
+    const L = G.S.students; if (!L.length || picking) return;
+    picking = true;
+    const nameEl = h('div', { class: 'pick-name' }), teamEl = h('div', { class: 'pick-team' });
+    const ov = h('div', { class: 'pickov', role: 'dialog', 'aria-label': 'Кім жауап береді?' },
+      h('div', { class: 'eyebrow', style: { color: 'var(--moon-2)' } }, '🎯 Кім жауап береді?'), nameEl, teamEl,
+      h('div', { class: 'pick-hint' }, 'Жабу үшін кез келген жерді немесе Enter басыңыз'));
+    document.body.append(ov);
+    const fx = G.fx(ov, 'stars');
+    const target = Math.random() * L.length | 0;
+    let k = Math.random() * L.length | 0, step = 0, done = false;
+    const total = 26;
+    const close = () => { if (!done) return; document.removeEventListener('keydown', onKey, true); fx.stop(); ov.remove(); picking = false; };
+    const onKey = e => { e.preventDefault(); e.stopImmediatePropagation(); if (done && /Enter| |Escape|n|N/.test(e.key)) close(); };
+    document.addEventListener('keydown', onKey, true);
+    ov.addEventListener('click', close);
+    (function spin() {
+      if (!ov.isConnected) return;
+      step++;
+      k = step >= total ? target : (k + 1 + (Math.random() * 3 | 0)) % L.length;
+      const s = L[k], T = G.S.teams[s.team];
+      nameEl.textContent = s.name;
+      nameEl.style.color = T ? T.color : '#fff';
+      nameEl.animate([{ transform: 'translateY(40%)', opacity: .2, filter: 'blur(6px)' }, { transform: 'none', opacity: 1, filter: 'blur(0)' }], { duration: Math.min(260, 40 + step * 9), easing: 'cubic-bezier(.2,.8,.2,1)' });
+      G.sfx('blip');
+      if (step < total) setTimeout(spin, 45 + Math.pow(step / total, 3) * 520);
+      else {
+        done = true; G.lastPick = target;
+        teamEl.textContent = T ? T.emoji + ' ' + T.name : 'Командасыз';
+        nameEl.animate([{ transform: 'scale(.7)' }, { transform: 'scale(1.18)' }, { transform: 'none' }], { duration: 700, easing: 'cubic-bezier(.2,1.4,.4,1)' });
+        G.sfx('fanfare');
+        setTimeout(() => G.burstAt(nameEl, [T ? T.color : '#ffd60a', '#ffffff', '#ffd60a'], 120), 120);
+      }
+    })();
   };
   G.setKK = v => { G.S.kk = !!v; document.body.classList.toggle('kk-on', G.S.kk); G.save(); document.querySelectorAll('[data-kk]').forEach(b => b.setAttribute('aria-pressed', String(G.S.kk))); };
 
@@ -424,6 +472,7 @@
     if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); next(); }
     else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); prev(); }
     else if (k === 'k' || k === 'K') G.setKK(!G.S.kk);
+    else if (k === 'n' || k === 'N') G.pickStudent();
     else if (k === 'f' || k === 'F') toggleFull();
   }
   function toggleFull() {
@@ -451,6 +500,7 @@
         h('button', { class: 'wordmark', onclick: () => G.home(), title: 'Басты бет' }, 'Super U'),
         h('span', { class: 'ttl' }, L.n + '-сабақ · ' + L.title),
         sb,
+        h('button', { class: 'tog', title: 'Кім жауап береді? (N)', onclick: () => G.pickStudent() }, '🎯'),
         tog('ҚАЗ', G.S.kk, () => G.setKK(!G.S.kk), { 'data-kk': '', title: 'Қазақша түсіндірме (K)' }),
         sound,
         tog('⤢', false, toggleFull, { title: 'Толық экран (F)' })),
@@ -499,6 +549,7 @@
         h('div', { class: 'row' },
           h('button', { class: 'pill', onclick: start }, Object.keys(S.pos).some(k => S.pos[k]) ? firstOpen.n + '-сабақты жалғастыру' : '1-сабақты бастау'),
           h('button', { class: 'link', onclick: () => scrollTo('how') }, 'Қалай жұмыс істейді?')),
+        S.students.length ? h('div', { class: 'starring' }, h('span', { class: 'st-l' }, (S.group ? S.group + ' · ' : '') + 'Starring'), h('div', null, S.students.map((s, k) => h('span', { style: { animationDelay: (.9 + k * .09) + 's' } }, s.name)))) : null,
         h('div', { class: 'chips' }, lessons.map((L, n) => h('div', { class: 'float', style: { animationDelay: (-n * 2) + 's' } }, G.chip(L, { delay: (.5 + n * .15) + 's', sub: S.done[L.id] ? 'Ашылды ✓' : L.title, tilt: true, onclick: () => G.play(L.id, S.pos[L.id] || 0) }))))));
 
     const WORDS = ['can', 'can\'t', 'could', 'couldn\'t', 'was', 'were', 'was born', 'a little bit', 'quite well', 'brilliantly', 'fluently', 'not at all'];
@@ -545,9 +596,22 @@
         const em = h('button', { class: 'em', title: 'Белгіні ауыстыру', onclick: () => { T.emoji = G.EMOJI[(G.EMOJI.indexOf(T.emoji) + 1) % G.EMOJI.length]; G.save(); em.textContent = T.emoji; em.animate([{ transform: 'scale(.4) rotate(-30deg)' }, { transform: 'scale(1.2)' }, { transform: 'none' }], { duration: 450, easing: 'cubic-bezier(.2,.8,.2,1)' }); } }, T.emoji);
         const name = h('input', { type: 'text', value: T.name, maxlength: '16', 'aria-label': 'Команда аты', id: 'team-' + t, oninput: e => { T.name = e.target.value.trim() || ('Team ' + (t + 1)); G.save(); } });
         const sw = h('div', { class: 'swatches' }, G.COLORS.map(c => h('button', { class: 'sw', style: { background: c }, 'aria-label': 'түс', 'aria-pressed': String(T.color === c), onclick: () => { T.color = c; G.save(); drawTeams(); } })));
-        teamCards.append(h('div', { class: 'tcard', style: { animation: 'rise .7s ' + (t * .06) + 's var(--ease) both', boxShadow: 'inset 0 3px 0 ' + T.color } }, h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } }, em, h('span', { class: 'score' }, T.score)), name, sw));
+        const mem = G.members(t);
+        teamCards.append(h('div', { class: 'tcard', style: { animation: 'rise .7s ' + (t * .06) + 's var(--ease) both', boxShadow: 'inset 0 3px 0 ' + T.color } }, h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } }, em, h('span', { class: 'score' }, T.score)), name,
+          h('div', { class: 'members' }, mem.length ? mem.map((s, k) => h('span', { style: { animationDelay: (drafting ? (S.students.indexOf(s) * .12) : 0) + 's', borderColor: T.color } }, s.name, s.stars ? ' ⭐' + s.stars : '')) : h('em', { class: 'muted' }, 'Әзірге бос')), sw));
       });
+      drafting = false;
     };
+    let drafting = false;
+    const roster = h('div', { class: 'roster' });
+    const drawRoster = () => {
+      roster.innerHTML = '';
+      S.students.forEach((s, i) => roster.append(h('span', { class: 'rchip' }, s.name, h('button', { 'aria-label': s.name + ' өшіру', title: 'Өшіру', onclick: () => { S.students.splice(i, 1); G.save(); drawRoster(); drawTeams(); } }, '×'))));
+      const inp = h('input', { type: 'text', id: 'new-student', placeholder: '+ оқушы қосу', maxlength: '20', onkeydown: e => { if (e.key === 'Enter' && e.target.value.trim()) { S.students.push({ name: e.target.value.trim(), team: -1, stars: 0 }); G.save(); drawRoster(); drawTeams(); setTimeout(() => { const n = document.getElementById('new-student'); if (n) n.focus(); }, 0); } } });
+      roster.append(inp);
+    };
+    drawRoster();
+    const draftBtn = h('button', { class: 'pill', onclick: () => { G.draft(); drafting = true; G.sfx('drum'); drawTeams(); setTimeout(() => { G.sfx('fanfare'); G.burstAt(draftBtn, ['#ff9f0a', '#ff375f', '#0a84ff', '#30d158'], 90); }, S.students.length * 120 + 200); } }, '🎲 Жеребемен бөлу');
     const seg = h('div', { class: 'seg', role: 'group', 'aria-label': 'Команда саны' });
     const drawSeg = () => { seg.innerHTML = ''; [2, 3, 4, 5, 6].forEach(n => seg.append(h('button', { 'aria-pressed': String(S.teams.length === n), onclick: () => { G.setTeamCount(n); drawSeg(); drawTeams(); } }, n))); };
     drawSeg(); drawTeams();
@@ -582,6 +646,9 @@
         h('label', { for: 'group' }, 'Топ'), h('input', { type: 'text', id: 'group', value: S.group, placeholder: 'мысалы, AI-25', maxlength: '20', oninput: e => { S.group = e.target.value.trim(); G.save(); } }),
         h('label', { for: 'size' }, 'Студент саны'), h('input', { type: 'number', id: 'size', min: '2', max: '60', value: S.size, style: { width: '80px' }, oninput: e => { const v = parseInt(e.target.value, 10); if (v > 1 && v < 100) { S.size = v; G.save(); } } }),
         h('label', null, 'Команда саны'), seg),
+      h('div', { style: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginTop: '30px' } },
+        h('div', { class: 'eyebrow' }, 'Оқушылар · ' + S.students.length), roster, draftBtn,
+        h('div', { class: 'muted', style: { fontSize: '14px' } }, 'Жеребе оқушыларды командаларға кездейсоқ бөледі. Қайта бассаң — қайта бөледі.')),
       teamCards,
       h('div', { style: { textAlign: 'center', marginTop: '26px' } }, resetBox),
       voiceBox));
@@ -612,8 +679,32 @@
     const box = h('div', { style: { minHeight: '52vh', display: 'grid', placeItems: 'center', width: '100%' } });
     inner.append(box);
     let auto = null;
+    const names = def.roll ? G.S.students.map(s => s.name) : [];
+    const R = def.roll && names.length ? 1 : 0, N = def.lines.length + R;
     function render() {
       box.innerHTML = '';
+      if (auto) { clearTimeout(auto); auto = null; }
+      if (R && step === def.lines.length) {
+        let k = 0;
+        const show = () => {
+          box.innerHTML = '';
+          if (k < names.length) {
+            const T = G.S.teams[(G.S.students[k] || {}).team];
+            const el2 = h('div', { class: 'display', style: { color: T ? T.color : 'var(--moon)', textShadow: '0 0 50px currentColor' } }, names[k]);
+            box.append(el2);
+            el2.animate([{ opacity: 0, transform: 'scale(1.35)', filter: 'blur(14px)' }, { opacity: 1, transform: 'none', filter: 'blur(0)' }], { duration: 360, easing: 'cubic-bezier(.2,.8,.2,1)' });
+            G.sfx('blip'); fx.set(1.5 + k * .25);
+            k++; auto = api.after(show, 520);
+          } else {
+            box.append(G.split('Every one of you has a *superpower.*', { cls: 'headline', stagger: .1 }));
+            box.firstChild.style.color = 'var(--moon)'; box.firstChild.style.maxWidth = '16ch';
+            G.sfx('whoosh');
+            auto = api.after(() => { step++; render(); }, 2800);
+          }
+        };
+        show();
+        return;
+      }
       if (step < def.lines.length) {
         box.append(G.split(def.lines[step], { cls: 'headline', stagger: .09 }));
         box.firstChild.style.color = 'var(--moon)'; box.firstChild.style.maxWidth = '16ch';
@@ -636,7 +727,7 @@
     }
     render();
     return {
-      next: () => { if (step < def.lines.length) { step++; render(); return true; } return false; },
+      next: () => { if (step < N) { step++; render(); return true; } return false; },
       prev: () => { if (step > 0) { step--; render(); return true; } return false; }
     };
   };
@@ -696,8 +787,11 @@
         b._k = op.k; opts.append(b);
       });
       foot.innerHTML = '';
-      foot.append(h('button', { class: 'reveal-btn', onclick: () => reveal(-1) }, 'Жауапты көрсету →'));
-      api.hint('Командалар ойланып, ауызша жауап береді (A, B немесе C). Сосын → басыңыз — дұрыс жауап ашылады.');
+      G.lastPick = null;
+      foot.append(h('div', { style: { display: 'flex', gap: '26px', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' } },
+        h('button', { class: 'reveal-btn', onclick: () => G.pickStudent() }, '🎯 Кім жауап береді?'),
+        h('button', { class: 'reveal-btn', onclick: () => reveal(-1) }, 'Жауапты көрсету →')));
+      api.hint('🎯 (немесе N) — барабан жауап беретін оқушыны таңдайды. Ол ауызша жауап береді. Сосын → — дұрыс жауап.');
     }
     function reveal(k) {
       if (revealed) return; revealed = true;
@@ -712,7 +806,17 @@
       foot.innerHTML = '';
       if (it.e) foot.append(h('div', { class: 'why', style: { animation: 'rise .7s var(--ease) both' }, html: G.fmt(it.e) }));
       if (it.k) foot.append(G.kk(it.k));
-      foot.append(G.picker(pts, awards[i]));
+      let pk = G.picker(pts, awards[i]);
+      if (G.lastPick != null && G.S.students[G.lastPick]) {
+        const s = G.S.students[G.lastPick], t = s.team;
+        const star = h('button', { class: 'pill', style: { animation: 'rise .6s var(--ease) both' }, onclick: () => {
+          s.stars = (s.stars || 0) + 1; G.save(); star.disabled = true; star.textContent = '⭐ ' + s.name + ' · ' + s.stars;
+          G.burstAt(star, ['#ffd60a', '#ffffff', '#ff9f0a'], 70); G.sfx('ok');
+          if (t >= 0 && !awards[i].has(t)) { awards[i].add(t); G.award(t, pts, star); const np = G.picker(pts, awards[i]); pk.replaceWith(np); pk = np; }
+        } }, '⭐ ' + s.name + ' дұрыс тапты');
+        foot.append(star);
+      }
+      foot.append(pk);
       api.hint('Дұрыс тапқан командаларды басыңыз (+' + pts + '). Сосын → — ' + (i < items.length - 1 ? 'келесі сұрақ.' : 'келесі бөлім.'));
     }
     show();
