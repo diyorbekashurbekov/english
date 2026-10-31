@@ -185,12 +185,12 @@
   /* Great talents: guess who */
   const genius = { render(inner, def, api) {
     const P = G.shuffle([
-      { n: 'Pablo Picasso', i: 'PP', ico: '🎨', job: 'an artist', p: 'he', born: 'October 25th, 1881', place: 'Malaga, Spain', could: 'draw', age: 'just two', y: '1881–1973' },
-      { n: 'Marie Curie', i: 'MC', ico: '🔬', job: 'a scientist', p: 'she', born: 'November 7th, 1867', place: 'Warsaw, Poland', could: 'read', age: 'four', y: '1867–1934' },
-      { n: 'John Lennon', i: 'JL', ico: '🎸', job: 'a singer and songwriter', p: 'he', born: 'October 9th, 1940', place: 'Liverpool, England', could: 'play the banjo and the guitar', age: 'eleven', y: '1940–1980' },
-      { n: 'Serena Williams', i: 'SW', ico: '🎾', job: 'a tennis player', p: 'she', born: 'September 26th, 1981', place: 'Michigan, the USA', could: 'play tennis', age: 'just three', y: 'born 1981' },
-      { n: 'Wolfgang Amadeus Mozart', i: 'WM', ico: '🎹', job: 'a composer', p: 'he', born: 'January 27th, 1756', place: 'Salzburg, Austria', could: 'write music', age: 'five', y: '1756–1791' },
-      { n: 'Lionel Messi', i: 'LM', ico: '⚽', job: 'a footballer', p: 'he', born: 'June 24th, 1987', place: 'Rosario, Argentina', could: 'play football brilliantly', age: 'five', y: 'born 1987' }
+      { n: 'Lionel Messi', i: 'LM', ico: '⚽', img: 'img/messi.jpg', credit: 'Bryan Berlin · CC BY-SA 4.0', job: 'a footballer', p: 'he', born: 'June 24th, 1987', place: 'Rosario, Argentina', could: 'play football brilliantly', age: 'five', y: 'born 1987' },
+      { n: 'Cristiano Ronaldo', i: 'CR', ico: '⚽', img: 'img/ronaldo.jpg', credit: 'Bryan Berlin · CC BY-SA 4.0', job: 'a footballer', p: 'he', born: 'February 5th, 1985', place: 'Funchal, Portugal', could: 'play football for a local club', age: 'eight', y: 'born 1985' },
+      { n: 'Lamine Yamal', i: 'LY', ico: '⚽', img: 'img/yamal.jpg', credit: 'Bryan Berlin · CC BY-SA 4.0', job: 'a footballer', p: 'he', born: 'July 13th, 2007', place: 'Esplugues de Llobregat, Spain', could: 'play in Barcelona\'s football academy', age: 'just seven', y: 'born 2007' },
+      { n: 'Dimash Kudaibergen', i: 'DK', ico: '🎤', img: 'img/dimash.jpg', credit: 'laura___dear · CC BY-SA 3.0', job: 'a singer', p: 'he', born: 'May 24th, 1994', place: 'Aktobe, Kazakhstan', could: 'sing and play the piano', age: 'a little boy', y: 'born 1994' },
+      { n: 'Elon Musk', i: 'EM', ico: '🚀', img: 'img/musk.jpg', credit: 'Gage Skidmore · CC BY-SA 4.0', job: 'a businessman and engineer', p: 'he', born: 'June 28th, 1971', place: 'Pretoria, South Africa', could: 'write computer games', age: 'twelve', y: 'born 1971' },
+      { n: 'Taylor Swift', i: 'TS', ico: '🎸', img: 'img/swift.png', credit: 'iHeartRadioCA · CC BY 3.0', job: 'a singer and songwriter', p: 'she', born: 'December 13th, 1989', place: 'Pennsylvania, the USA', could: 'write songs', age: 'twelve', y: 'born 1989' }
     ]);
     const awards = P.map(() => new Set());
     let i = 0, st = 1;
@@ -213,10 +213,12 @@
         api.hint('Кеңестерді бірге оқыңдар. Командалар «Бұл кім?» деп болжайды. → — тағы бір кеңес (кеңес аз болса, ұпай көп).');
       } else {
         const used = Math.min(4, clues.children.length);
-        mono.className = 'mono flip'; mono.innerHTML = ''; mono.append(g.i, h('span', { class: 'em' }, g.ico));
+        mono.className = 'mono flip' + (g.img ? ' photo' : ''); mono.innerHTML = '';
+        if (g.img) mono.append(h('img', { src: g.img, alt: g.n, onerror: e => { e.target.remove(); mono.classList.remove('photo'); mono.prepend(g.i); } }), h('span', { class: 'em' }, g.ico));
+        else mono.append(g.i, h('span', { class: 'em' }, g.ico));
         setTimeout(() => G.burstAt(mono, ['#2997ff', '#a95cff', '#ffd60a', '#ffffff'], 90), 450);
         who.innerHTML = '';
-        who.append(h('div', { class: 'mid' }, g.n), h('div', { class: 'note' }, g.y + ' · ' + g.job));
+        who.append(h('div', { class: 'mid' }, g.n), h('div', { class: 'note' }, g.y + ' · ' + g.job), g.credit ? h('div', { class: 'credit' }, 'Photo: ' + g.credit + ' · Wikimedia Commons') : null);
         foot.append(G.picker((5 - used) * 100, awards[i]));
         api.hint('Дұрыс тапқан командаларды басыңыз. Сосын → — ' + (i < P.length - 1 ? 'келесі адам.' : 'келесі бөлім.'));
       }
@@ -319,7 +321,7 @@
         { lines: ['I *was born* in 2009.', 'Picasso *was born* on October 25th, 1881.'], note: 'Never “I born”. *in* + year or city · *on* + date', kk: '«Мен туылдым» — I was born. Жыл, қала алдында — in; нақты күн алдында — on.' }
       ] },
       genius,
-      { type: 'dictation', items: ['Picasso could draw when he was just two.', 'Marie Curie was born in Warsaw.', 'Where were you yesterday?', 'I couldn\'t swim when I was five.', 'We were at home last night.'] },
+      { type: 'dictation', items: ['Messi could play football when he was five.', 'Dimash was born in Aktobe.', 'Where were you yesterday?', 'I couldn\'t swim when I was five.', 'We were at home last night.'] },
       { type: 'quiz', title: 'Born to be', timer: 20, pts: 100, items: [].concat(G.BANK.born, G.BANK.could) , count: 6 },
       mystery,
       { type: 'read', kicker: 'Reading · A talented family', title: 'Is this the most *talented* family in Kazakhstan?', kk: 'Мәтінді абзац-абзацпен бірге оқимыз. Назар аударыңдар: can, could, was, were.', paras: READ },
