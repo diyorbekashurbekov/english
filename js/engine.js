@@ -587,7 +587,8 @@
             pos ? h('button', { class: 'link', onclick: () => G.play(L.id, 0) }, 'Басынан') : null));
         card.addEventListener('pointermove', e => { const r = card.getBoundingClientRect(); card.style.setProperty('--mx', (e.clientX - r.left) + 'px'); card.style.setProperty('--my', (e.clientY - r.top) + 'px'); });
         return card;
-      }))));
+      })),
+      h('div', { class: 'reveal', style: { display: 'flex', justifyContent: 'center', marginTop: '40px' } }, G.practiceCard(false))));
 
     const teamCards = h('div', { class: 'tcards' });
     const drawTeams = () => {
@@ -877,6 +878,7 @@
           h('span', { class: 'pl' }, n + 1), h('span', { class: 'nm' }, h('span', { class: 'dot', style: { '--c': r.T.color } }), r.T.emoji + ' ' + r.T.name),
           h('span', { class: 'bar' }, bar), sc);
       })),
+      h('div', { style: { animation: 'rise 1s 2.4s var(--ease) both' } }, G.practiceCard(true)),
       h('div', { style: { display: 'flex', gap: '26px', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', animation: 'rise 1s 2.6s var(--ease) both' }, class: 'on-dark' },
         nextL ? h('button', { class: 'pill light', onclick: () => G.play(nextL.id, 0) }, nextL.n + '-сабақ: ' + nextL.title) : null,
         h('button', { class: 'link', onclick: () => G.home('lessons') }, 'Басты бет')));
@@ -884,10 +886,214 @@
     return {};
   };
 
+  /* ---------- More scene types ---------- */
+  // Class vs Boss: the whole group fights one villain together
+  G.SCENES.boss = (inner, def, api, el) => {
+    const L = api.lesson;
+    G.fx(el, 'stars');
+    const items = G.shuffle(def.items).slice(0, def.count || 8);
+    const hits = Math.ceil(items.length * .75), MAXH = 4;
+    let i = 0, hp = 100, hearts = MAXH, st = 0, over = false;
+    const vEmoji = h('div', { class: 'boss-emoji' }, def.emoji);
+    const hpBar = h('i', { style: { width: '100%' } });
+    const heartsEl = h('div', { class: 'boss-hearts' });
+    const qEl = h('div', { style: { maxWidth: '1000px', minHeight: '1.4em' } }), opts = h('div', { class: 'opts' });
+    const foot = h('div', { style: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', minHeight: '90px' } });
+    const drawHearts = () => { heartsEl.textContent = '❤️'.repeat(hearts) + '🖤'.repeat(MAXH - hearts); };
+    inner.append(
+      h('div', { class: 'boss-top' },
+        h('div', { class: 'boss-side' }, h('div', { class: 'eyebrow' }, (G.S.group || 'Сынып') + ' · бүкіл топ'), heartsEl),
+        h('div', { class: 'boss-side', style: { alignItems: 'center' } }, vEmoji, h('div', { class: 'eyebrow' }, def.villain), h('div', { class: 'boss-hp' }, hpBar))),
+      qEl, opts, foot);
+    drawHearts();
+    function show() {
+      st = 0;
+      const it = items[i];
+      qEl.innerHTML = ''; qEl.append(G.split(it.q, { cls: G.plain(it.q).length < 40 ? 'mid' : 'small-q', stagger: .05 }));
+      opts.innerHTML = '';
+      G.shuffle(it.o.map((t, k) => ({ t, k }))).forEach((op, n) => { const b = h('button', { class: 'opt', style: { animation: 'rise .7s ' + (.2 + n * .08) + 's var(--ease) both' }, onclick: () => reveal(op.k) }, h('span', { class: 'L' }, 'ABC'[n]), h('span', { html: G.fmt(op.t) })); b._k = op.k; opts.append(b); });
+      foot.innerHTML = '';
+      api.hint('Бүкіл сынып бірге ойлап, бір жауап айтады. → — дұрыс жауап. Дұрыс болса — зұлымға соққы, қате болса — сынып жүрегін жоғалтады.');
+    }
+    function reveal(k) {
+      if (st) return; st = 1;
+      const it = items[i];
+      [...opts.children].forEach(b => b.classList.add(b._k === it.a ? 'right' : b._k === k ? 'wrong' : 'dim'));
+      const g = qEl.querySelector('.gap'); if (g) { g.innerHTML = G.fmt('*' + G.plain(it.o[it.a]) + '*'); g.classList.add('fill'); }
+      foot.innerHTML = '';
+      foot.append(h('div', { style: { display: 'flex', gap: '14px', flexWrap: 'wrap', justifyContent: 'center' } },
+        h('button', { class: 'pill', onclick: () => decide(true) }, '✓ Сынып дұрыс тапты'),
+        h('button', { class: 'pill light', onclick: () => decide(false) }, '✗ Қате айтты')));
+      if (k !== -1) decide(k === it.a);
+      else api.hint('Сынып дұрыс айтты ма? Батырманы басыңыз.');
+    }
+    function decide(ok) {
+      if (st !== 1 || over) return; st = 2;
+      foot.innerHTML = '';
+      if (ok) {
+        hp = Math.max(0, hp - 100 / hits); hpBar.style.width = hp + '%';
+        vEmoji.animate([{ transform: 'translateX(-14px) rotate(-8deg)' }, { transform: 'translateX(14px) rotate(8deg)' }, { transform: 'none' }], { duration: 450 });
+        G.sfx('boom'); G.burstAt(vEmoji, ['#ff453a', '#ffd60a', '#ffffff'], 90);
+        foot.append(h('div', { class: 'headline grad', style: { animation: 'pop .5s cubic-bezier(.2,1.4,.4,1) both' } }, G.pick(['POW!', 'BOOM!', 'WHAM!', 'ZAP!'])));
+      } else {
+        hearts--; drawHearts(); G.sfx('bad');
+        heartsEl.animate([{ transform: 'scale(1.3)' }, { transform: 'none' }], { duration: 400 });
+        foot.append(h('div', { class: 'mid', style: { color: 'var(--red)' } }, def.taunt || 'Ha-ha! Try again!'));
+      }
+      if (hp <= 0) return end(true);
+      if (hearts <= 0) return end(false);
+      api.hint('→ — келесі сұрақ.');
+    }
+    function end(win) {
+      over = true; opts.innerHTML = ''; qEl.innerHTML = ''; foot.innerHTML = '';
+      if (win) {
+        vEmoji.textContent = '💥'; G.sfx('fanfare'); G.fx(el, 'fireworks', { colors: (L && L.colors || []).concat(['#ffd60a', '#ffffff']) });
+        qEl.append(h('div', { class: 'display grad shimmer' }, 'Victory!'));
+        foot.append(h('div', { class: 'lede', style: { color: 'var(--moon-2)' } }, 'Бүкіл топ бірге жеңді! Әр командаға +200.'));
+        G.S.teams.forEach((T, t) => setTimeout(() => G.award(t, 200, vEmoji), t * 250));
+      } else {
+        G.sfx('bad');
+        qEl.append(h('div', { class: 'display', style: { color: 'var(--moon)' } }, 'Not this time…'));
+        foot.append(h('div', { class: 'lede', style: { color: 'var(--moon-2)' } }, 'Зұлым бұл жолы қашып кетті. Ережені қайталап, тағы көріңдер!'), h('button', { class: 'pill light', onclick: () => api.go(api.index) }, '↻ Қайта шайқасу'));
+      }
+      api.hint('→ — келесі бөлім.');
+    }
+    show();
+    return {
+      next: () => {
+        if (over) return false;
+        if (st === 0) { reveal(-1); return true; }
+        if (st === 1) { G.toast('Алдымен басыңыз: ✓ дұрыс немесе ✗ қате'); return true; }
+        if (i < items.length - 1) { i++; show(); return true; }
+        end(hp <= 34); return true;
+      }
+    };
+  };
+
+  // Reading: a text that opens paragraph by paragraph
+  G.SCENES.read = (inner, def, api) => {
+    let p = 0;
+    const box = h('div', { class: 'readbox' });
+    inner.append(h('div', { class: 'lines', style: { gap: '4px' } }, h('div', { class: 'eyebrow' }, def.kicker), G.split(def.title, { cls: 'headline' })), G.kk(def.kk), box,
+      h('button', { class: 'reveal-btn', onclick: () => G.speak(def.paras.join(' ')) }, '🔈 Бүкіл мәтінді тыңдау'));
+    function add() {
+      const t = def.paras[p];
+      const para = h('div', { class: 'para' }, G.sayBtn(t), G.split(t, { tag: 'p', stagger: .018 }));
+      box.append(para);
+      setTimeout(() => para.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+      api.hint(p < def.paras.length - 1 ? 'Абзацты бірге оқыңдар (🔈 — тыңдау). → — келесі абзац.' : 'Мәтін аяқталды. → — сұрақтар.');
+    }
+    add();
+    return { next: () => { if (p < def.paras.length - 1) { p++; add(); return true; } return false; } };
+  };
+
+  // Dictation: hear it, write it, check it word by word
+  G.SCENES.dictation = (inner, def, api) => {
+    const items = def.items, awards = items.map(() => new Set());
+    let i = 0, open = false;
+    const ey = h('div', { class: 'eyebrow' }), out = h('div', { style: { minHeight: '2.6em', maxWidth: '1000px' } }), foot = h('div', { style: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', minHeight: '80px' } });
+    const play = h('button', { class: 'play', 'aria-label': 'Тыңдау' }, '▶');
+    const doPlay = rate => { play.classList.add('on'); G.speak(items[i], { rate, onend: () => play.classList.remove('on') }); };
+    play.onclick = () => doPlay();
+    inner.append(h('div', { class: 'lines', style: { gap: '4px' } }, ey, G.split('Listen. *Write.* Check.', { cls: 'headline' })),
+      h('div', { style: { display: 'flex', alignItems: 'center', gap: '26px' } }, play, h('button', { class: 'link', onclick: () => doPlay(.6) }, 'Баяулау')), out, foot);
+    function show() {
+      open = false; ey.textContent = 'Dictation · ' + (i + 1) + ' / ' + items.length;
+      out.innerHTML = ''; out.append(h('div', { class: 'mid', style: { color: 'var(--ink-3)', letterSpacing: '.1em' } }, items[i].split(' ').map(w => '_'.repeat(Math.min(8, w.length))).join('  ')));
+      foot.innerHTML = '';
+      api.after(() => doPlay(), 500);
+      api.hint('Сөйлемді тыңдаңдар (2–3 рет). Әр команда дәптерге жазады. → — дұрыс жазылуы ашылады.');
+    }
+    function reveal() {
+      open = true; out.innerHTML = '';
+      out.append(G.split(items[i], { cls: 'mid', stagger: .12 }));
+      G.sfx('ok');
+      foot.innerHTML = ''; foot.append(G.picker(100, awards[i], 'Қатесіз жазған командаларды басыңыз.'));
+      api.hint('Қатесіз жазған командаларды басыңыз. → — келесі сөйлем.');
+    }
+    show();
+    return { next: () => { if (!open) { reveal(); return true; } if (i < items.length - 1) { i++; show(); return true; } return false; } };
+  };
+
+  // Recap: what did we learn today?
+  G.SCENES.recap = (inner, def, api) => {
+    inner.append(h('div', { class: 'lines', style: { gap: '4px' } }, h('div', { class: 'eyebrow' }, 'Recap'), G.split('What did we *learn* today?', { cls: 'headline' })),
+      h('div', { class: 'recap-rules' }, def.rules.map((r, n) => h('div', { style: { animation: 'rise .8s ' + (.4 + n * .12) + 's var(--ease) both' }, html: G.fmt(r) }))),
+      h('div', { class: 'card', style: { maxWidth: '900px', width: '100%', textAlign: 'left', animation: 'rise .9s 1s var(--ease) both' } },
+        h('div', { class: 'eyebrow', style: { marginBottom: '10px' } }, 'Сөйлемді аяқта'),
+        h('div', { class: 'plist' }, def.starters.map(s => h('div', null, G.sayBtn(s), h('span', { html: G.fmt(s) }))))),
+      h('button', { class: 'pill', onclick: () => G.pickStudent() }, '🎯 Кім айтады?'), G.kk(def.kk));
+    api.hint('🎯 — барабан оқушыны таңдайды, ол бір сөйлемді аяқтайды. 3 оқушыға қайталаңыз. Сосын → басыңыз.');
+    return {};
+  };
+
+  /* ---------- Phone practice (open the site with #practice) ---------- */
+  G.PRACTICE_URL = 'https://diyorbekashurbekov.github.io/english/#practice';
+  G.qr = (url, size) => {
+    const box = h('div', { class: 'qr' });
+    try { if (window.QRCode) { new window.QRCode(box, { text: url, width: size || 160, height: size || 160, colorDark: '#000000', colorLight: '#ffffff' }); return box; } } catch (e) {}
+    box.append(h('div', { style: { fontSize: '13px', wordBreak: 'break-all', color: '#000', padding: '8px' } }, url));
+    return box;
+  };
+  G.practiceCard = dark => h('div', { class: 'practice-card' + (dark ? ' on-dark' : '') }, G.qr(G.PRACTICE_URL, 150),
+    h('div', { style: { display: 'flex', flexDirection: 'column', gap: '6px', textAlign: 'left' } },
+      h('b', { style: { fontSize: '20px', letterSpacing: '-.02em' } }, '📱 Телефонмен жаттығу'),
+      h('span', { class: 'muted', style: { fontSize: '15px' } }, 'Камерамен QR-кодты сканерле — үйде өз бетіңше квиз ойна.'),
+      h('a', { href: G.PRACTICE_URL, target: '_blank', rel: 'noopener', class: 'link', style: { fontSize: '14px' } }, 'Сілтеме')));
+  const PRACTICE = { power: ['can', 'adv', 'pron'], time: ['waswere', 'could', 'born', 'adj'], connect: ['vn', 'prep', 'req'] };
+  G.practice = () => {
+    if (D) { clearScene(); document.removeEventListener('keydown', onKey); D = null; }
+    document.body.style.overflow = '';
+    const app = $('#app'); app.innerHTML = '';
+    const wrap = h('div', { class: 'wrap pr' });
+    app.append(h('nav', { class: 'nav' }, h('div', { class: 'wrap' }, h('button', { class: 'wordmark', onclick: () => { history.replaceState(null, '', location.pathname); G.home(); } }, 'Super U'), h('span', { class: 'sp' }), h('span', { class: 'muted', style: { fontSize: '13px' } }, 'Practice'))), wrap);
+    function menu() {
+      wrap.innerHTML = '';
+      wrap.append(h('h1', { class: 'headline', style: { marginTop: '30px' } }, 'Practice.'), h('p', { class: 'lede' }, 'Сабақты таңда — 10 сұрақ, бірден жауабы.'),
+        h('div', { class: 'pr-lessons' }, G.ORDER.map(id => { const L = G.LESSONS[id]; return h('button', { class: 'pr-l', style: { '--g': L.grad }, onclick: () => run(id) }, h('span', { class: 'grad', style: { fontFamily: 'var(--f-display)', fontWeight: 700, fontSize: '30px', letterSpacing: '-.03em' } }, L.title), h('span', { class: 'muted' }, L.grammar)); })));
+    }
+    function run(id) {
+      const L = G.LESSONS[id];
+      const pool = G.shuffle([].concat(...PRACTICE[id].map(k => G.BANK[k] || []))).slice(0, 10);
+      let i = 0, right = 0;
+      const q = () => {
+        const it = pool[i];
+        wrap.innerHTML = '';
+        const opts = G.shuffle(it.o.map((t, k) => ({ t, k })));
+        const fb = h('div');
+        wrap.append(h('div', { class: 'eyebrow', style: { marginTop: '26px' } }, L.title + ' · ' + (i + 1) + ' / ' + pool.length + ' · ✓ ' + right),
+          h('div', { class: 'small-q', style: { margin: '14px 0 18px' }, html: G.fmt(it.q) }),
+          h('div', { class: 'opts', style: { gridTemplateColumns: '1fr' } }, opts.map((op, n) => {
+            const b = h('button', { class: 'opt', onclick: () => {
+              if (fb.childNodes.length) return;
+              const ok = op.k === it.a; if (ok) right++;
+              [...b.parentNode.children].forEach((x, m) => x.classList.add(opts[m].k === it.a ? 'right' : x === b ? 'wrong' : 'dim'));
+              G.sfx(ok ? 'ok' : 'bad'); if (ok) G.burstAt(b, null, 40);
+              fb.append(h('div', { class: 'why', style: { margin: '14px 0', textAlign: 'left' }, html: G.fmt((ok ? '✓ ' : '✗ ') + (it.e || '')) }), G.kk(it.k),
+                h('button', { class: 'pill', style: { marginTop: '14px' }, onclick: () => { i++; i < pool.length ? q() : end(); } }, i < pool.length - 1 ? 'Келесі →' : 'Нәтиже →'));
+            } }, h('span', { class: 'L' }, 'ABC'[n]), h('span', { html: G.fmt(op.t) }));
+            return b;
+          })), fb);
+        window.scrollTo(0, 0);
+      };
+      const end = () => {
+        wrap.innerHTML = '';
+        const stars = right >= 9 ? 3 : right >= 7 ? 2 : 1;
+        wrap.append(h('div', { style: { textAlign: 'center', marginTop: '50px', display: 'flex', flexDirection: 'column', gap: '14px', alignItems: 'center' } },
+          h('div', { style: { fontSize: '56px' } }, '⭐'.repeat(stars)), h('h2', { class: 'display grad', style: { '--g': L.grad } }, right + ' / ' + pool.length),
+          h('p', { class: 'lede' }, stars === 3 ? 'Керемет! Сен — Super U!' : stars === 2 ? 'Жақсы! Тағы бір рет ойнасаң — 3 жұлдыз.' : 'Ережені қайталап, тағы ойна!'),
+          h('div', { style: { display: 'flex', gap: '20px', alignItems: 'center' } }, h('button', { class: 'pill', onclick: () => run(id) }, '↻ Қайта'), h('button', { class: 'link', onclick: menu }, 'Басқа сабақ'))));
+        if (stars >= 2) G.confetti(120);
+      };
+      q();
+    }
+    menu();
+  };
+
   /* ---------- Start ---------- */
   G.start = () => {
     document.body.classList.toggle('kk-on', !!G.S.kk);
     document.addEventListener('pointerdown', () => G.actx(), { once: true });
-    G.home();
+    if (location.hash === '#practice') G.practice(); else G.home();
   };
 })();

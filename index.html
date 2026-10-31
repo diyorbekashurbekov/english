@@ -363,6 +363,24 @@ kbd{font-family:var(--f-text);font-weight:600;font-size:14px;min-width:30px;heig
 .podium div{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;animation:rise 1s var(--ease) both}
 .podium .blk{width:100%;border-radius:20px 20px 0 0;background:linear-gradient(#2c2c2e,#1c1c1e);display:grid;place-items:center;font-family:var(--f-display);font-size:42px;font-weight:700;color:var(--moon-2)}
 .podium .nm{font-family:var(--f-display);font-weight:700;font-size:clamp(22px,2.8vw,36px);color:var(--moon);letter-spacing:-.03em}
+.boss-top{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;width:100%;max-width:1000px}
+.boss-side{display:flex;flex-direction:column;gap:8px}
+.boss-emoji{font-size:clamp(70px,10vw,130px);line-height:1;animation:floaty 3s ease-in-out infinite;filter:drop-shadow(0 0 30px rgba(255,69,58,.5))}
+.boss-hp{width:min(320px,40vw);height:14px;border-radius:7px;background:var(--night-3);overflow:hidden}
+.boss-hp i{display:block;height:100%;background:linear-gradient(90deg,#ff453a,#ff9f0a);border-radius:7px;transition:width .8s var(--ease)}
+.boss-hearts{font-size:clamp(26px,3vw,38px);letter-spacing:4px}
+.readbox{width:100%;max-width:880px;display:flex;flex-direction:column;gap:18px;text-align:left}
+.para{display:flex;gap:14px;align-items:flex-start;animation:rise .8s var(--ease) both}
+.para p{margin:0;font-family:var(--f-display);font-size:clamp(20px,2.2vw,30px);font-weight:500;letter-spacing:-.02em;line-height:1.35}
+.recap-rules{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:1000px}
+.recap-rules div{padding:10px 18px;border-radius:999px;background:var(--mist);font-family:var(--f-display);font-weight:600;font-size:clamp(17px,1.8vw,22px)}
+.qr{background:#fff;padding:10px;border-radius:16px;line-height:0;flex:none}
+.qr img,.qr canvas{display:block;max-width:100%}
+.practice-card{display:flex;gap:18px;align-items:center;background:var(--mist);border-radius:26px;padding:16px 22px 16px 16px;max-width:520px;text-align:left}
+.practice-card.on-dark{background:var(--night-2);color:var(--moon)}
+.pr{padding-block:10px 60px;max-width:640px}
+.pr-lessons{display:flex;flex-direction:column;gap:12px;margin-top:26px}
+.pr-l{display:flex;flex-direction:column;align-items:flex-start;gap:4px;background:var(--mist);border-radius:22px;padding:20px 22px;text-align:left}
 .voicewarn{position:fixed;left:50%;top:calc(70px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:320;width:min(560px,calc(100vw - 32px));background:rgba(29,29,31,.94);color:#f5f5f7;border-radius:22px;padding:18px 20px;display:flex;flex-direction:column;gap:8px;align-items:flex-start;box-shadow:0 30px 80px -20px rgba(0,0,0,.5);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);animation:rise .5s var(--ease) both;font-size:15px}
 .voicewarn b{font-size:17px}
 .voicewarn p{color:#c7c7cc;margin:0}
@@ -459,6 +477,7 @@ kbd{font-family:var(--f-text);font-weight:600;font-size:14px;min-width:30px;heig
 </head>
 <body>
 <div id="app"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="js/engine.js" charset="utf-8"></script>
 <script src="js/lesson1.js" charset="utf-8"></script>
 <script src="js/lesson2.js" charset="utf-8"></script>

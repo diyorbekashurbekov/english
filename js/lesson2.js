@@ -32,6 +32,35 @@
     ['Serena Williams was born ___ 1981.', ['in', 'on', 'at'], 'A year → *in*.', 'Жыл → in.']
   ]);
 
+  G.BANK.adj = Q([
+    ['Music lessons cost a lot of money. They are ___.', ['expensive', 'rich', 'proud'], '*expensive* = costs a lot.', 'expensive — қымбат.'],
+    ['Gulnara is very ___ of her children.', ['proud', 'successful', 'normal'], '*proud of* someone.', 'proud of — мақтан тұту.'],
+    ['She looks after the family every day. She is a ___ mum.', ['full-time', 'cool', 'old'], '*full-time* = all day, every day.', 'full-time — толық күн.'],
+    ['They have a lot of money. They are ___.', ['rich', 'expensive', 'talented'], '*rich* = has a lot of money.', 'rich — бай.'],
+    ['The children are very good at music. They are ___.', ['talented', 'normal', 'expensive'], '*talented* = very good at something.', 'talented — дарынды.'],
+    ['They work hard and get great results. They are ___.', ['successful', 'proud', 'old'], '*successful* = good results.', 'successful — табысты.'],
+    ['“For us, playing music is ___!” — it\'s fun and modern.', ['cool', 'expensive', 'full-time'], '*cool* = great, fashionable.', 'cool — керемет, сәнді.'],
+    ['Aruzhan can play the piano ___ — she is amazing!', ['brilliantly', 'brilliant', 'a little bit'], 'Verb + *brilliantly* (adverb). The adjective is *brilliant*.', 'Етістіктен кейін — brilliantly; сын есім — brilliant.']
+  ]);
+  const TF = [
+    ['All seven children can play a musical instrument.', true, 'Yes — they can all play an instrument.'],
+    ['Aruzhan can play the piano quite well.', false, 'False — she can play it *brilliantly*.'],
+    ['Timur could play twenty kuis when he was eleven.', true, 'Yes — he *could* already play twenty kuis.'],
+    ['Dana and Arman can sing really well.', false, 'False — they *can\'t* sing at all.'],
+    ['The family was on TV in 2021.', false, 'False — they *were* on TV in 2023.'],
+    ['They were very nervous on the show.', false, 'False — they *weren\'t* nervous. They were really happy.'],
+    ['Their parents are musicians.', false, 'False — Serik is a doctor and Gulnara is a full-time mum.'],
+    ['The children practise for three hours every day.', true, 'Yes — three hours every day.']
+  ].map(([q, t, e]) => ({ q, o: ['True ✓', 'False ✗'], a: t ? 0 : 1, e, fixed: true }));
+  const READ = [
+    'Meet the Ospanovs from Almaty. There are seven children in the family — four girls and three boys — and they can all play a musical instrument. Aruzhan is nineteen and she can play the piano brilliantly.',
+    'Her brother Timur is seventeen. He can play the dombra and the guitar. When Timur was eleven, he could already play twenty kuis — traditional Kazakh pieces — on the dombra!',
+    'The two youngest children, Dana and Arman, can play the violin quite well, but they can\'t sing at all. “We sound terrible!” laughs Dana.',
+    'In 2023 the family was on the TV show “Kazakhstan Talents”. They weren\'t nervous. “We were really happy,” says Aruzhan. “Millions of people were at home watching us!”',
+    'Their parents, Serik and Gulnara, aren\'t musicians. Serik is a doctor and Gulnara is a full-time mum. “We aren\'t rich, and music lessons are expensive,” says Gulnara. “But the children work very hard. They practise for three hours every day. That\'s why they are successful. I\'m very proud of them.”',
+    'Are they a normal family? “Of course!” says Timur. “We argue about the TV and the bathroom like everyone. And for us, playing music is cool!”'
+  ];
+
   /* Time machine: now → 1916 */
   const timeMachine = { render(inner, def, api, el) {
     const IT = [
@@ -267,11 +296,14 @@
 
   G.lesson({
     id: 'time', n: 2, title: 'Time', chip: 'could', grad: 'var(--g-time)', glow: 'rgba(129,92,255,.6)', glowColor: '#7d5cff', colors: ['#2997ff', '#a95cff', '#64d2ff'], fx: 'warp',
-    grammar: 'was · were · could · was born', minutes: 80,
+    grammar: 'was · were · could · was born', minutes: 100,
     blurb: '1916 жылға уақыт машинасы, командалық эстафета, атақты адамдар және туған күндегі құпия.',
-    specs: { grammar: 'was / were, wasn\'t / weren\'t · сұрақ және қысқа жауап · could / couldn\'t · was born + in / on', words: 'yesterday, last week, last year, when I was five, until', skills: 'Оқу: кеңестер мен куәгер сөздері · Сөйлеу: өз өмірің туралы', games: 'Time machine · Relay · Great talents · The Missing Cake' },
+    specs: { grammar: 'was / were, wasn\'t / weren\'t · сұрақ және қысқа жауап · could / couldn\'t · was born + in / on', words: 'yesterday, last week, last year, when I was five, until', skills: 'Оқу: кеңестер мен куәгер сөздері · Сөйлеу: өз өмірің туралы', games: 'Time machine · Relay · Great talents · Диктант · The Missing Cake · A talented family (оқу) · Class vs Boss' },
     scenes: [
       { type: 'film', dark: true, lines: ['What if you could travel in time?', 'New York.', '*1916.*', 'Ready?'], kicker: 'Lesson 2', title: 'Time.', sub: 'was · were · could · was born', kk: 'Бүгін — өткен шақ: was, were, could. Уақытта саяхат жасаймыз!' },
+      { type: 'task', kicker: 'Warm-up · 3 minutes', title: 'Yesterday…', note: 'Ask three people in your team. Answer with *I was…*', kk: 'Жылыну: командаңдағы үш адамнан сұра. Жауап: I was at home / at school / in bed…', minutes: 3,
+        prompts: ['Where were you at *8 o\'clock* this morning?', 'Where were you at *10 o\'clock* last night?', 'Where were you last *Sunday*?', 'Were you *happy* yesterday?'],
+        model: ['Where were you at 10 o\'clock last night?', 'I was at home. I was in bed!'] },
       { type: 'explain', kicker: 'Grammar', title: 'The past of *be*.', beats: [
         { lines: ['Today it *is* sunny.', 'Yesterday it *was* sunny.'], note: 'am / is → *was* · are → *were*', kk: 'am/is → was, are → were.' },
         { lines: ['I *was* · he *was* · she *was* · it *was*', 'you *were* · we *were* · they *were*'], note: 'Careful: *everyone* and *nobody* take was.', kk: 'I/he/she/it → was; you/we/they → were. Everyone, nobody → was.' },
@@ -287,12 +319,22 @@
         { lines: ['I *was born* in 2009.', 'Picasso *was born* on October 25th, 1881.'], note: 'Never “I born”. *in* + year or city · *on* + date', kk: '«Мен туылдым» — I was born. Жыл, қала алдында — in; нақты күн алдында — on.' }
       ] },
       genius,
+      { type: 'dictation', items: ['Picasso could draw when he was just two.', 'Marie Curie was born in Warsaw.', 'Where were you yesterday?', 'I couldn\'t swim when I was five.', 'We were at home last night.'] },
       { type: 'quiz', title: 'Born to be', timer: 20, pts: 100, items: [].concat(G.BANK.born, G.BANK.could) , count: 6 },
       mystery,
+      { type: 'read', kicker: 'Reading · A talented family', title: 'Is this the most *talented* family in Kazakhstan?', kk: 'Мәтінді абзац-абзацпен бірге оқимыз. Назар аударыңдар: can, could, was, were.', paras: READ },
+      { type: 'quiz', title: 'True or false?', timer: 20, pts: 100, items: TF, shuffle: false },
+      { type: 'explain', kicker: 'Words', title: 'Words from the text', beats: [
+        { lines: ['*talented* · *brilliant* · *successful*'], note: 'very good at something · amazing · gets great results', kk: 'talented — дарынды · brilliant — тамаша · successful — табысты' },
+        { lines: ['*proud* of · *normal* · *cool*'], note: 'very happy about someone · usual · great, fashionable', kk: 'proud of — мақтан тұту · normal — қалыпты · cool — керемет' },
+        { lines: ['*rich* · *expensive* · *full-time*'], note: 'a lot of money · costs a lot · all day, every day', kk: 'rich — бай · expensive — қымбат · full-time — толық күн' }
+      ] },
+      { type: 'quiz', title: 'The right word', timer: 15, pts: 100, items: G.BANK.adj },
       { type: 'task', kicker: 'Pair work · 5 minutes', title: 'Your life. In the past.', note: 'Ask your partner. Then tell the class one surprising thing.', kk: 'Жұбыңнан сұра. Соңында сыныпқа бір қызық дерек айт.', minutes: 5,
         prompts: ['When were you *born*?', 'Where were you *born*?', 'How old were you when you *could* walk?', 'How old were you when you *could* ride a bike?', '*Could* you swim when you were five?', 'Where *were* you at 8.00 this morning?'],
         model: ['When were you born?', 'I was born in 2009, in Turkistan.', 'How old were you when you could ride a bike?', 'I could ride a bike when I was seven.'] },
-      { type: 'quiz', title: 'Time battle · double points', timer: 15, pts: 200, items: [].concat(G.BANK.waswere, G.BANK.could, G.BANK.born), count: 10 },
+      { type: 'boss', dark: true, villain: 'Captain Yesterday', emoji: '🕰️', taunt: 'The past is mine!', items: [].concat(G.BANK.waswere, G.BANK.could, G.BANK.born), count: 8 },
+      { type: 'recap', rules: ['I *was* · they *were*', 'I *wasn\'t* at school.', 'I *could* read at five.', 'I *was born* in 2009.', '*talented* · *proud* · *successful*'], starters: ['Yesterday I *was* …', 'When I was five, I *could* …', 'I *was born* in … in …'], kk: 'Бүгін: was/were, could/couldn\'t, was born және мәтіндегі сын есімдер.' },
       { type: 'unlock', dark: true, lesson: 'time', line: 'Time unlocked.', note: 'You can travel to the past with was, were and could.', kk: 'Екінші күш ашылды! Енді was, were, could арқылы өткен шақ туралы айта аласың.' }
     ]
   });

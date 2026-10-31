@@ -181,11 +181,14 @@
 
   G.lesson({
     id: 'power', n: 1, title: 'Power', chip: 'can', grad: 'var(--g-power)', glow: 'rgba(255,46,84,.6)', glowColor: '#ff2e54', colors: ['#ff9004', '#ff2e54', '#ffd60a'], fx: 'embers',
-    grammar: 'can · can\'t · how well', minutes: 75,
+    grammar: 'can · can\'t · how well', minutes: 85,
     blurb: 'Суперқаһармандар, дыбыс зертханасы және сыныптағы тікелей сауалнама. Біз не істей аламыз?',
-    specs: { grammar: 'can / can\'t — қабілет · сұрақ және қысқа жауап · қаншалықты жақсы: a little bit, quite well, really well, brilliantly, fluently, not at all', words: 'swim, ski, cook, sing, ride a bike, play the guitar, speak a foreign language', skills: 'Тыңдау: /kən/ мен /kɑːnt/ айырмашылығы · Сөйлеу: сұхбат, сынып туралы есеп', games: 'Hero check · Sound lab · Сынып сауалнамасы · Power battle' },
+    specs: { grammar: 'can / can\'t — қабілет · сұрақ және қысқа жауап · қаншалықты жақсы: a little bit, quite well, really well, brilliantly, fluently, not at all', words: 'swim, ski, cook, sing, ride a bike, play the guitar, speak a foreign language', skills: 'Тыңдау: /kən/ мен /kɑːnt/ айырмашылығы · Сөйлеу: сұхбат, сынып туралы есеп', games: 'Hero check · Sound lab · Сынып сауалнамасы · Superhero draft · Диктант · Class vs Boss' },
     scenes: [
       { type: 'film', dark: true, roll: true, lines: ['Everyone has a superpower.', 'Some people can *fly*.', 'Some people can *read minds*.', 'What can *you* do?'], kicker: 'Lesson 1', title: 'Power.', sub: 'can · can\'t · how well', kk: 'Әр адамның бір күші бар. Бүгін — can: не істей аламыз?' },
+      { type: 'task', kicker: 'Warm-up · 3 minutes', title: 'Name the superhero.', note: 'In teams: name 5 superheroes. What can they do?', kk: 'Жылыну: командамен 5 суперқаһарманның атын атаңдар. Олар не істей алады? Мысалы: Spider-Man can climb buildings.', minutes: 3,
+        prompts: ['Who can *fly*?', 'Who can *climb buildings*?', 'Who can *run very fast*?', 'Who can *talk to animals*?', 'Who can *read people\'s minds*?'],
+        model: ['Who can fly?', 'Superman can fly!', 'Can Batman fly?', 'No, he can\'t.'] },
       { type: 'explain', kicker: 'Grammar', title: 'Meet *can*.', beats: [
         { lines: ['I *can* fly.'], note: '*can* = ability. What you are able to do.', kk: 'can — «істей аламын». Қабілетті білдіреді.' },
         { lines: ['I *can* fly.', 'She *can* fly.', 'They *can* fly.'], note: '*can* never changes. No -s. No “to”.', kk: 'can ешқашан өзгермейді: she cans емес, can to fly емес.' },
@@ -200,7 +203,12 @@
       { type: 'task', kicker: 'Pair work · 4 minutes', title: 'Interview your partner.', note: 'Ask. Answer with *how well*. Then tell the class.', kk: 'Жұбыңнан сұра, «how well» арқылы жауап бер. Соңында сыныпқа айт: Aliya can cook really well, but she can\'t ski at all.', minutes: 4,
         prompts: ['Can you *ski*?', 'Can you *cook*?', 'Can you *speak Spanish*?', 'Can you *play a musical instrument*?', 'Can you *ride a motorbike*?', 'Can you *draw*?'],
         model: ['Can you cook?', 'Yes, I can. I can cook quite well.', 'Can you ski?', 'No, I can\'t ski at all!'] },
-      { type: 'quiz', title: 'Power battle · double points', timer: 15, pts: 200, items: [].concat(G.BANK.can, G.BANK.adv, G.BANK.pron), count: 10 },
+      { type: 'task', kicker: 'Team challenge · 5 minutes', title: 'Superhero draft.', note: 'Every team creates a new superhero. Then present it to the class!', kk: 'Әр команда жаңа суперқаһарман ойлап табады: аты, 3 күші (can), 2 әлсіздігі (can\'t). Сосын сыныпқа таныстырады, ең жақсысына дауыс береміз.', minutes: 5,
+        prompts: ['Our hero\'s name is …', 'He / She *can* … (3 powers)', 'He / She *can\'t* … (2 weaknesses)', 'He / She can … *really well*.', 'He / She can\'t … *at all*!'],
+        model: ['Our hero is Captain Steppe!', 'She can fly and she can speak every language.', 'Can she swim?', 'No, she can\'t swim at all!'] },
+      { type: 'dictation', items: ['I can swim, but I can\'t ski.', 'She can speak French a little bit.', 'Can you play the guitar?', 'He can\'t cook at all.', 'Dexter can sing really well.'] },
+      { type: 'boss', dark: true, villain: 'Dr. Can\'t', emoji: '🦹', taunt: 'Ha! You can\'t beat me!', items: [].concat(G.BANK.can, G.BANK.adv, G.BANK.pron), count: 8 },
+      { type: 'recap', rules: ['I *can* swim.', 'She *can\'t* ski.', '*Can* you…? — Yes, I *can*.', '/kən/ · /kɑːnt/', 'a little bit → *brilliantly*'], starters: ['Today I learned that I *can* …', 'I *can\'t* … at all.', 'My partner can … really well.'], kk: 'Бүгін: can/can\'t, сұрақ пен қысқа жауап, айтылуы және «how well».' },
       { type: 'unlock', dark: true, lesson: 'power', line: 'Power unlocked.', note: 'You can say what you can — and can\'t — do.', kk: 'Бірінші күш ашылды! Енді не істей алатыныңды және не істей алмайтыныңды ағылшынша айта аласың.' }
     ]
   });

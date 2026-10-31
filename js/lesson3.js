@@ -371,11 +371,14 @@
 
   G.lesson({
     id: 'connect', n: 3, title: 'Connect', chip: 'please', grad: 'var(--g-connect)', glow: 'rgba(48,209,88,.55)', glowColor: '#21c47a', colors: ['#00c7be', '#30d158', '#64d2ff'], fx: 'orbs',
-    grammar: 'words that go together · polite requests · formal email', minutes: 85,
+    grammar: 'words that go together · polite requests · formal email', minutes: 95,
     blurb: 'Сөз біріктіру зертханасы, жұмбақ қала, нақты диалогтар және жұмысқа нақты өтініш хат.',
     specs: { grammar: 'Can I…? / Could you…? — сыпайы өтініш және жауаптар · ресми хат тіркестері', words: 'noun + noun: bus stop, sunglasses, traffic lights… · verb + noun: play the violin, earn money… · предлогтар: about, of, to, from, on, at, with, for', skills: 'Сөйлеу: рөлдік ойын · Жазу: жұмысқа ресми хат', games: 'Fusion lab · City riddles · Messages · The email · Super U Awards' },
     scenes: [
       { type: 'film', dark: true, lines: ['Some words are strong.', 'Together, they are *stronger*.', 'bus + stop.', 'sun + glasses.'], kicker: 'Lesson 3', title: 'Connect.', sub: 'words that go together · polite requests · a formal email', kk: 'Бүгін — бірге жүретін сөздер және сыпайы ағылшын тілі.' },
+      { type: 'task', kicker: 'Warm-up · 3 minutes', title: 'On the street.', note: 'In teams: write 6 things you can see on the street.', kk: 'Жылыну: командамен көшеде көретін 6 нәрсені ағылшынша жазыңдар. Қай команда көп жазады?', minutes: 3,
+        prompts: ['a *bus*…', 'a *car*…', '*traffic*…', 'a *coffee*…', 'a *railway*…'],
+        model: ['What can you see?', 'A bus, a car and traffic lights!'] },
       { type: 'explain', kicker: 'Words', title: 'noun + noun', beats: [
         { lines: ['*sun* + *glasses*', '= sunglasses'], note: 'One word.', kk: 'Бірге жазылады.' },
         { lines: ['*bus* + *stop*', '= bus stop'], note: 'Two words.', kk: 'Бөлек жазылады.' },
@@ -403,6 +406,7 @@
       cafe,
       email,
       { type: 'quiz', title: 'Final battle · triple points', timer: 15, pts: 300, items: [].concat(G.BANK.can, G.BANK.adv, G.BANK.waswere, G.BANK.could, G.BANK.born, G.BANK.vn, G.BANK.prep, G.BANK.req), count: 12 },
+      { type: 'recap', rules: ['*bus stop* · *sunglasses*', '*play* the violin', 'worried *about*', '*Can I* …? · *Could you* …?', '*Dear* … · *Yours sincerely*'], starters: ['Today I learned the word …', '*Could you* … , please?', 'In a formal email we write …'], kk: 'Бүгін: бірге жүретін сөздер, предлогтар, сыпайы өтініш және ресми хат.' },
       { type: 'unlock', dark: true, lesson: 'connect', line: 'Connect unlocked.', note: 'Three powers. One group. Time for the awards.', kk: 'Үшінші күш ашылды! Енді → басыңыз — марапаттау басталады.', hint: 'Үш күш те ашылды! → — Super U Awards марапаттауы.' },
       awardsScene
     ]
