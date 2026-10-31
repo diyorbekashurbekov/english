@@ -8,29 +8,25 @@
 
   G.BANK = G.BANK || {};
   G.BANK.can = Q([
-    ['Superman ___ fly.', ['can', 'cans', 'can to'], '*can* + verb. No -s, no "to".', 'can-ге -s жалғанбайды, кейін to келмейді.'],
-    ['Batman ___ fly. He has no superpowers.', ['can\'t', 'can', 'doesn\'t can'], 'Negative: *can\'t* + verb.', 'Болымсыз: can\'t + етістік.'],
-    ['___ you speak Spanish?', ['Can', 'Do can', 'Are'], 'Questions start with *Can*.', 'Сұрақ Can-нан басталады.'],
-    ['Can Spider-Man climb buildings? — Yes, he ___.', ['can', 'climbs', 'can climb'], 'Short answer: *Yes, he can.*', 'Қысқа жауапта етістік қайталанбайды.'],
-    ['Can Ben speak Spanish? — No, he ___.', ['can\'t', 'doesn\'t', 'isn\'t'], 'Short answer: *No, he can\'t.*', 'Қысқа жауап: No, he can\'t.'],
-    ['Which one is correct?', ['She can swim very well.', 'She cans swim very well.', 'She can to swim very well.'], '*can* + verb — always.', 'Әрқашан: can + етістік.'],
-    ['Which question is correct?', ['Can he play the guitar?', 'Can he plays the guitar?', 'Does he can play the guitar?'], '*Can* + subject + verb.', 'Can + бастауыш + етістік.'],
-    ['Sorry, I ___ hear you. The music is too loud!', ['can\'t', 'can', 'cans'], 'Loud music → not able to hear.', 'Музыка қатты — ести алмаймын.'],
-    ['Dexter is only six, but he ___ play the guitar brilliantly!', ['can', 'can\'t', 'cans'], '*brilliantly* → he is able to.', 'brilliantly — өте жақсы істей алады.'],
-    ['Which question is correct?', ['What can they do?', 'What they can do?', 'What do they can do?'], 'Question word + *can* + subject + verb.', 'Сұрақ сөз + can + бастауыш + етістік.']
+    ['🦸 Superman ___ fly.', ['can', 'cans'], '*can* + verb. No -s.', 'can-ге -s жалғанбайды.'],
+    ['🦇 Batman ___ fly.', ['can\'t', 'can'], 'Batman *can\'t* fly.', 'Бэтмен ұша алмайды — can\'t.'],
+    ['___ you swim?', ['Can', 'Are'], '*Can* you swim?', 'Сұрақ Can-нан басталады.'],
+    ['Can you cook? — Yes, I ___.', ['can', 'cook'], 'Yes, I *can*.', 'Қысқа жауап: Yes, I can.'],
+    ['Can he ski? — No, he ___.', ['can\'t', 'isn\'t'], 'No, he *can\'t*.', 'Қысқа жауап: No, he can\'t.'],
+    ['She can ___ the guitar.', ['play', 'plays'], 'can + *play* (no -s).', 'can-нан кейін етістік өзгермейді.'],
+    ['I can\'t ___. 🔇', ['hear you', 'hears you'], 'can\'t + *hear*.', 'can\'t + етістік.'],
+    ['🕷️ Spider-Man can ___ buildings.', ['climb', 'to climb'], 'can + *climb* (no "to").', 'can-нан кейін to қойылмайды.']
   ]);
   G.BANK.adv = Q([
-    ['Dexter can speak Spanish ___. ★★★★★', ['fluently', 'a little bit', 'at all'], '*fluently* — for languages, the top level.', 'fluently — тілді еркін білу.'],
-    ['I can\'t ski ___. ☆☆☆☆☆', ['at all', 'quite well', 'fluently'], '*not … at all* = zero.', 'not … at all — мүлдем.'],
-    ['Ben can speak French ___ — only “bonjour” and “merci”.', ['a little bit', 'fluently', 'brilliantly'], 'Two words → *a little bit*.', 'Екі сөз ғана — a little bit.'],
-    ['She can play the guitar ___. ★★★★☆', ['really well', 'not at all', 'a little bit'], 'Four stars → *really well*.', 'Төрт жұлдыз — really well.'],
-    ['He can cook ___. ★★★☆☆', ['quite well', 'at all', 'fluently'], 'Three stars → *quite well*.', 'Үш жұлдыз — quite well.'],
-    ['Which one is correct?', ['I can\'t sing at all.', 'I can sing at all.', 'I can\'t at all sing.'], '*at all* goes with *can\'t*, at the end.', 'at all — can\'t-пен, сөйлем соңында.']
+    ['I can speak English ___. ★★★★★', ['fluently', 'a little bit'], '★★★★★ = *fluently*.', 'fluently — еркін.'],
+    ['I can\'t ski ___. ☆☆☆☆☆', ['at all', 'really well'], 'can\'t … *at all*.', 'at all — мүлдем.'],
+    ['He can cook ___. ★☆☆☆☆', ['a little bit', 'brilliantly'], '★ = *a little bit*.', 'a little bit — сәл.'],
+    ['She can sing ___. ★★★★☆', ['really well', 'at all'], '★★★★ = *really well*.', 'really well — өте жақсы.'],
+    ['We can swim ___. ★★★☆☆', ['quite well', 'at all'], '★★★ = *quite well*.', 'quite well — жақсы.']
   ]);
   G.BANK.pron = Q([
-    ['How do we say “can” in “I can swim”?', ['/kən/ — short and weak', '/kɑːnt/ — long and strong', '/kæn/ — loud'], 'Inside a sentence *can* is weak.', 'Сөйлем ішінде can әлсіз айтылады.'],
-    ['How do we say “can\'t” in “I can\'t swim”?', ['/kɑːnt/ — long and strong', '/kən/ — short and weak', 'we don\'t say the t'], '*can\'t* is stressed.', 'can\'t екпінмен айтылады.'],
-    ['“You can SING.” Which word has the stress?', ['sing', 'can', 'you'], 'The main verb is stressed.', 'Екпін негізгі етістікке түседі.']
+    ['“I *can* swim.” — can is…', ['short /kən/', 'long /kɑːnt/'], '*can* is short.', 'can — қысқа.'],
+    ['“I *can\'t* swim.” — can\'t is…', ['long /kɑːnt/', 'short /kən/'], '*can\'t* is long.', 'can\'t — ұзын, екпінді.']
   ]);
 
   /* Sound lab: can or can't? */
@@ -195,19 +191,21 @@
         { lines: ['Batman *can\'t* fly.'], note: '*can\'t* = cannot.', kk: 'can\'t — «істей алмайды».' },
         { lines: ['*Can* you fly?', 'Yes, I *can*. · No, I *can\'t*.'], note: 'In questions, *can* comes first. Short answers have no main verb.', kk: 'Сұрақта can алға шығады. Қысқа жауапта негізгі етістік қайталанбайды.' }
       ] },
-      { type: 'quiz', title: 'Hero check', timer: 20, pts: 100, items: G.BANK.can, count: 8 },
+      { type: 'quiz', title: 'Hero check', timer: 20, pts: 100, items: G.BANK.can, count: 5 },
+      { type: 'standup', items: [['🏊', 'I can swim.'], ['🚲', 'I can ride a bike.'], ['🍳', 'I can cook.'], ['⛷️', 'I can ski.'], ['🎤', 'I can sing.'], ['🎸', 'I can play the guitar.'], ['🦸', 'I can fly!']] },
       soundLab,
       scale,
       { type: 'quiz', title: 'How well?', timer: 20, pts: 100, items: G.BANK.adv },
       survey,
+      { type: 'unscramble', items: ['I can swim.', 'Can you cook?', 'He can\'t ski.', 'She can sing really well.', 'I can\'t fly at all.'] },
       { type: 'task', kicker: 'Pair work · 4 minutes', title: 'Interview your partner.', note: 'Ask. Answer with *how well*. Then tell the class.', kk: 'Жұбыңнан сұра, «how well» арқылы жауап бер. Соңында сыныпқа айт: Aliya can cook really well, but she can\'t ski at all.', minutes: 4,
         prompts: ['Can you *ski*?', 'Can you *cook*?', 'Can you *speak Spanish*?', 'Can you *play a musical instrument*?', 'Can you *ride a motorbike*?', 'Can you *draw*?'],
         model: ['Can you cook?', 'Yes, I can. I can cook quite well.', 'Can you ski?', 'No, I can\'t ski at all!'] },
       { type: 'task', kicker: 'Team challenge · 5 minutes', title: 'Superhero draft.', note: 'Every team creates a new superhero. Then present it to the class!', kk: 'Әр команда жаңа суперқаһарман ойлап табады: аты, 3 күші (can), 2 әлсіздігі (can\'t). Сосын сыныпқа таныстырады, ең жақсысына дауыс береміз.', minutes: 5,
         prompts: ['Our hero\'s name is …', 'He / She *can* … (3 powers)', 'He / She *can\'t* … (2 weaknesses)', 'He / She can … *really well*.', 'He / She can\'t … *at all*!'],
         model: ['Our hero is Captain Steppe!', 'She can fly and she can speak every language.', 'Can she swim?', 'No, she can\'t swim at all!'] },
-      { type: 'dictation', items: ['I can swim, but I can\'t ski.', 'She can speak French a little bit.', 'Can you play the guitar?', 'He can\'t cook at all.', 'Dexter can sing really well.'] },
-      { type: 'boss', dark: true, villain: 'Dr. Can\'t', emoji: '🦹', taunt: 'Ha! You can\'t beat me!', items: [].concat(G.BANK.can, G.BANK.adv, G.BANK.pron), count: 8 },
+      { type: 'dictation', items: ['I can swim.', 'Can you cook?', 'He can\'t ski.', 'She can sing really well.'] },
+      { type: 'boss', dark: true, villain: 'Dr. Can\'t', emoji: '🦹', taunt: 'Ha! You can\'t beat me!', items: [].concat(G.BANK.can, G.BANK.adv, G.BANK.pron), count: 6 },
       { type: 'recap', rules: ['I *can* swim.', 'She *can\'t* ski.', '*Can* you…? — Yes, I *can*.', '/kən/ · /kɑːnt/', 'a little bit → *brilliantly*'], starters: ['Today I learned that I *can* …', 'I *can\'t* … at all.', 'My partner can … really well.'], kk: 'Бүгін: can/can\'t, сұрақ пен қысқа жауап, айтылуы және «how well».' },
       { type: 'unlock', dark: true, lesson: 'power', line: 'Power unlocked.', note: 'You can say what you can — and can\'t — do.', kk: 'Бірінші күш ашылды! Енді не істей алатыныңды және не істей алмайтыныңды ағылшынша айта аласың.' }
     ]

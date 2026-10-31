@@ -1027,6 +1027,114 @@
     return {};
   };
 
+  // Stand up if it's true for you
+  G.SCENES.standup = (inner, def, api) => {
+    let i = 0;
+    const ey = h('div', { class: 'eyebrow' }), stage = h('div', { style: { minHeight: '46vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '18px' } });
+    inner.append(h('div', { class: 'lines', style: { gap: '4px' } }, ey, G.split('Stand up if it\'s *true* for you!', { cls: 'headline' })), G.kk('Сөйлем саған шын болса — орныңнан тұр! Мұғалім тұрғандардан сұрайды: «Can you swim?» — «Yes, I can!»'), stage);
+    function show() {
+      const [e, s] = def.items[i];
+      ey.textContent = 'Stand up! · ' + (i + 1) + ' / ' + def.items.length;
+      stage.innerHTML = '';
+      const em = h('div', { style: { fontSize: 'clamp(80px,12vw,150px)', lineHeight: 1 } }, e);
+      stage.append(em, G.split(s, { cls: 'big', delay: .2 }), G.sayBtn(s));
+      em.animate([{ transform: 'scale(.3) rotate(-20deg)', opacity: 0 }, { transform: 'scale(1.15)', opacity: 1 }, { transform: 'none' }], { duration: 700, easing: 'cubic-bezier(.2,1.4,.4,1)' });
+      G.sfx('whoosh'); setTimeout(() => G.speak(s), 400);
+      api.hint('Шын болса — тұрыңдар! Тұрған екі оқушыдан сұраңыз: «Can you …?». Сосын → — келесі сөйлем.');
+    }
+    show();
+    return { next: () => { if (i < def.items.length - 1) { i++; show(); return true; } return false; }, prev: () => { if (i > 0) { i--; show(); return true; } return false; } };
+  };
+
+  // Unscramble: words fly into the right order
+  G.SCENES.unscramble = (inner, def, api) => {
+    const items = def.items, awards = items.map(() => new Set());
+    let i = 0, open = false, chips = [];
+    const ey = h('div', { class: 'eyebrow' }), row = h('div', { class: 'scr' }), foot = h('div', { style: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', minHeight: '90px' } });
+    inner.append(h('div', { class: 'lines', style: { gap: '4px' } }, ey, G.split('Put the words in *order*.', { cls: 'headline' })), G.kk('Сөздерді дұрыс ретке қойыңдар. Командалар сөйлемді дауыстап айтады.'), row, foot);
+    function show() {
+      open = false; ey.textContent = 'Unscramble · ' + (i + 1) + ' / ' + items.length;
+      const words = items[i].replace(/[.?!]$/, '').split(' ');
+      let order = G.shuffle(words.map((w, k) => k));
+      if (order.every((k, n) => k === n)) order = order.reverse();
+      row.innerHTML = '';
+      chips = words.map((w, k) => { const c = h('span', { class: 'scr-chip' }, w); c._k = k; return c; });
+      order.forEach((k, n) => { const c = chips[k]; c.style.animation = 'pop .5s ' + (n * .07) + 's cubic-bezier(.2,1.4,.4,1) both'; c.style.rotate = ((Math.random() - .5) * 14) + 'deg'; row.append(c); });
+      foot.innerHTML = '';
+      api.hint('Командалар сөйлемді дұрыс ретпен айтады. → — сөздер орнына ұшып барады.');
+    }
+    function reveal() {
+      open = true;
+      const first = chips.map(c => c.getBoundingClientRect());
+      chips.forEach(c => { c.style.animation = 'none'; row.append(c); });
+      chips.forEach((c, k) => {
+        const r0 = first[k], r1 = c.getBoundingClientRect();
+        c.style.rotate = '0deg'; c.classList.add('ok');
+        c.animate([{ transform: 'translate(' + (r0.left - r1.left) + 'px,' + (r0.top - r1.top) + 'px)' }, { transform: 'none' }], { duration: 700, delay: k * 60, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'backwards' });
+      });
+      G.sfx('ok'); setTimeout(() => { G.burstAt(row, null, 60); G.speak(items[i]); }, 700 + chips.length * 60);
+      foot.innerHTML = ''; foot.append(G.picker(100, awards[i]));
+      api.hint('Дұрыс айтқан командаларды басыңыз. → — келесі сөйлем.');
+    }
+    show();
+    return { next: () => { if (!open) { reveal(); return true; } if (i < items.length - 1) { i++; show(); return true; } return false; } };
+  };
+
+  // Memory: flip two cards, find a pair
+  G.SCENES.memory = (inner, def, api) => {
+    const T = G.S.teams;
+    let turn = 0, openC = [], found = 0, lock = false;
+    const cards = G.shuffle(def.pairs.flatMap((p, k) => [{ t: p[0], k }, { t: p[1], k }]));
+    const turnEl = h('div'), grid = h('div', { class: 'mem' });
+    inner.append(h('div', { class: 'lines', style: { gap: '4px' } }, h('div', { class: 'eyebrow' }, def.kicker || 'Memory'), G.split(def.title || 'Find the *pairs*.', { cls: 'headline' })), G.kk(def.kk), turnEl, grid);
+    const drawTurn = () => { const x = T[turn]; turnEl.innerHTML = ''; turnEl.append(h('span', { class: 'tp on' }, h('span', { class: 'dot', style: { '--c': x.color } }), 'Кезек: ' + x.emoji + ' ' + x.name)); };
+    cards.forEach((c, n) => {
+      const el = h('button', { class: 'mcard', style: { animation: 'pop .5s ' + (n * .04) + 's cubic-bezier(.2,1.4,.4,1) both' } }, h('span', { class: 'mback' }, '?'), h('span', { class: 'mface' }, c.t));
+      el.onclick = () => {
+        if (lock || el.classList.contains('open') || el.classList.contains('done')) return;
+        el.classList.add('open'); G.sfx('tap'); openC.push({ el, c });
+        if (openC.length === 2) {
+          lock = true;
+          const [a, b] = openC;
+          if (a.c.k === b.c.k) {
+            setTimeout(() => { a.el.classList.add('done'); b.el.classList.add('done'); G.sfx('ok'); G.burstAt(b.el, [T[turn].color, '#ffd60a'], 40); G.award(turn, 100, b.el); G.speak(def.pairs[a.c.k].join(' ')); found++; openC = []; lock = false; if (found === def.pairs.length) { G.confetti(120); api.hint('Барлық жұп табылды! → — келесі бөлім.'); } }, 450);
+          } else {
+            setTimeout(() => { a.el.classList.remove('open'); b.el.classList.remove('open'); G.sfx('bad'); openC = []; lock = false; turn = (turn + 1) % T.length; drawTurn(); }, 1100);
+          }
+        }
+      };
+      grid.append(el);
+    });
+    drawTurn();
+    api.hint('Команда екі карточканы таңдайды. Жұбы болса — +100 және тағы ойнайды. Болмаса — кезек келесі командаға. Біткенде → басыңыз.');
+    return {};
+  };
+
+  // Blur guess: a picture slowly comes into focus
+  G.SCENES.blur = (inner, def, api) => {
+    const items = def.items, awards = items.map(() => new Set());
+    let i = 0, open = false;
+    const ey = h('div', { class: 'eyebrow' }), pic = h('div', { class: 'blurpic' }), ans = h('div', { style: { minHeight: '1.3em' } }), foot = h('div', { style: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', minHeight: '80px' } });
+    inner.append(h('div', { class: 'lines', style: { gap: '4px' } }, ey, G.split('What is *it*?', { cls: 'headline' })), G.kk('Сурет біртіндеп анықталады. Бірінші болып ағылшынша айтқан команда жеңеді!'), pic, ans, foot);
+    function show() {
+      open = false; ey.textContent = 'Blur guess · ' + (i + 1) + ' / ' + items.length;
+      pic.textContent = items[i][0]; ans.innerHTML = ''; foot.innerHTML = '';
+      pic.getAnimations().forEach(a => a.cancel());
+      pic.animate([{ filter: 'blur(38px)', transform: 'scale(2.4)' }, { filter: 'blur(0)', transform: 'scale(1)' }], { duration: 9000, easing: 'cubic-bezier(.3,0,.3,1)', fill: 'forwards' });
+      api.hint('Сурет анықталып жатыр — бірінші айтқан команда жеңеді! → — жауап.');
+    }
+    function reveal() {
+      open = true;
+      pic.getAnimations().forEach(a => a.finish());
+      ans.append(G.split('*' + items[i][1] + '*', { cls: 'big' }));
+      G.sfx('ok'); G.speak(items[i][1]); G.burstAt(pic, null, 60);
+      foot.append(G.picker(100, awards[i], 'Бірінші дұрыс айтқан команданы басыңыз.'));
+      api.hint('Дұрыс айтқан команданы басыңыз. → — келесі сурет.');
+    }
+    show();
+    return { next: () => { if (!open) { reveal(); return true; } if (i < items.length - 1) { i++; show(); return true; } return false; } };
+  };
+
   /* ---------- Phone practice (open the site with #practice) ---------- */
   G.PRACTICE_URL = 'https://diyorbekashurbekov.github.io/english/#practice';
   G.qr = (url, size) => {

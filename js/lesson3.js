@@ -10,34 +10,24 @@
   const RIDDLE = { motorbike: 'You ride this, but it isn\'t a horse or a bicycle.', motorway: 'A big, fast road between cities.', 'bus stop': 'You wait here for a bus.', 'bus station': 'A lot of buses start and finish their journeys here.', businesswoman: 'She works in business and has a lot of meetings.', sunglasses: 'You wear these when it\'s very sunny.', 'coffee shop': 'You can buy a cappuccino here.', 'living room': 'In a house, you watch TV and relax here.', handbag: 'You carry your phone, keys and money in this.', 'railway station': 'You catch a train here.', 'car park': 'You leave your car here.', 'traffic lights': 'Red, yellow, green — cars stop and go.' };
 
   G.BANK.vn = Q([
-    ['___ a foreign language', ['speak', 'say', 'tell'], '*speak* a language.', 'тілде сөйлеу — speak.'],
-    ['___ a lot of money', ['earn', 'do', 'find'], '*earn* money = get money for work.', 'ақша табу — earn money.'],
-    ['___ the violin', ['play', 'do', 'make'], '*play* + instrument.', 'аспапта ойнау — play.'],
-    ['___ a shirt and tie', ['wear', 'dress', 'put'], '*wear* clothes.', 'киім кию — wear.'],
-    ['___ your health', ['look after', 'look at', 'look for'], '*look after* = take care of.', 'денсаулыққа қарау — look after.'],
-    ['___ films online', ['watch', 'listen', 'look'], '*watch* films / TV.', 'фильм көру — watch.'],
-    ['___ on holiday', ['go', 'do', 'make'], '*go* on holiday.', 'демалысқа бару — go on holiday.'],
-    ['___ a motorbike', ['ride', 'play', 'go'], '*ride* a bike, a motorbike, a horse.', 'мотоцикл айдау — ride.'],
-    ['___ a lot of text messages', ['send', 'say', 'speak'], '*send* messages.', 'хабарлама жіберу — send.'],
-    ['___ on the third floor', ['live', 'do', 'wear'], '*live* on the … floor.', '...қабатта тұру — live on.']
+    ['🎻 ___ the violin', ['play', 'make'], '*play* the violin.', 'аспапта ойнау — play.'],
+    ['🗣️ ___ a foreign language', ['speak', 'say'], '*speak* a language.', 'тілде сөйлеу — speak.'],
+    ['🏍️ ___ a motorbike', ['ride', 'play'], '*ride* a motorbike.', 'мотоцикл айдау — ride.'],
+    ['👔 ___ a shirt and tie', ['wear', 'play'], '*wear* clothes.', 'киім кию — wear.'],
+    ['🏖️ ___ on holiday', ['go', 'make'], '*go* on holiday.', 'демалысқа бару — go.'],
+    ['📺 ___ films online', ['watch', 'listen'], '*watch* films.', 'фильм көру — watch.']
   ]);
   G.BANK.prep = Q([
-    ['What would you like ___ your birthday?', ['for', 'to', 'at'], 'something *for* your birthday.', 'туған күніңе — for.'],
-    ['Where is your best friend ___?', ['from', 'of', 'at'], 'be *from* a country or city.', 'қайдан — from.'],
-    ['What sort ___ music do you like?', ['of', 'to', 'about'], 'a sort *of* / a kind *of*.', 'sort of — түрі.'],
-    ['Why are you worried ___ the exam?', ['about', 'of', 'with'], 'worried *about*.', 'worried about — алаңдау.'],
-    ['Is Aliya married ___ Daniyar?', ['to', 'with', 'on'], 'married *to* (not with).', 'married to — ...-ға үйленген.'],
-    ['Do you want to come shopping ___ me?', ['with', 'to', 'of'], '*with* = together.', 'with — бірге.'],
-    ['Were you ___ holiday last week?', ['on', 'in', 'at'], '*on* holiday.', 'on holiday — демалыста.'],
-    ['Can I speak ___ the manager, please?', ['to', 'at', 'about'], 'speak *to* someone.', 'біреумен сөйлесу — speak to.'],
-    ['Is he ___ work today?', ['at', 'on', 'in'], '*at* work.', 'at work — жұмыста.'],
-    ['Their mum is very proud ___ them.', ['of', 'about', 'for'], 'proud *of*.', 'proud of — мақтан тұту.']
+    ['Where are you ___? — Kazakhstan.', ['from', 'of'], 'Where are you *from*?', 'Қайдансың — from.'],
+    ['I\'m worried ___ the exam. 😟', ['about', 'to'], 'worried *about*.', 'worried about — алаңдау.'],
+    ['Come with me! I go shopping ___ you.', ['with', 'of'], '*with* = together.', 'with — бірге.'],
+    ['I was ___ holiday. 🏖️', ['on', 'of'], '*on* holiday.', 'on holiday — демалыста.'],
+    ['He is ___ work. 💼', ['at', 'about'], '*at* work.', 'at work — жұмыста.']
   ]);
   G.BANK.req = Q([
-    ['You want some water: “___ have a glass of water, please?”', ['Can I', 'Could you', 'Can you'], 'You want something → *Can I…?*', 'Өзіңе керек → Can I…?'],
-    ['“___ open the door for me, please?”', ['Could you', 'Can I', 'Could I'], 'Someone does it for you → *Could you…?*', 'Біреу саған істейді → Could you…?'],
-    ['Which is the most polite?', ['Could you help me, please?', 'Help me.', 'Can you help me?'], '*Could* + *please* = very polite.', 'Could + please — ең сыпайы.'],
-    ['You need a pen from a friend:', ['Could I borrow your pen?', 'Could you borrow me your pen?', 'Can I lend your pen?'], 'I *borrow* from you. You *lend* to me.', 'borrow — алу; lend — беру.']
+    ['💧 ___ have some water, please?', ['Can I', 'Could you'], 'You want something → *Can I…?*', 'Өзіңе керек → Can I…?'],
+    ['🚪 ___ open the door, please?', ['Could you', 'Can I'], 'Help me → *Could you…?*', 'Көмек сұрау → Could you…?'],
+    ['Which is polite? 🙂', ['Could you help me, please?', 'Help me!'], '*Could you…, please?* is polite.', 'Сыпайы түрі — Could you…, please?']
   ]);
 
   /* Fusion lab */
@@ -386,17 +376,18 @@
       ] },
       fusion,
       city,
+      { type: 'blur', items: [['🚦', 'traffic lights'], ['🕶️', 'sunglasses'], ['🏍️', 'motorbike'], ['🚏', 'bus stop'], ['☕', 'coffee shop'], ['👜', 'handbag']] },
       { type: 'explain', kicker: 'Words', title: 'verb + noun', beats: [
         { lines: ['*play* the violin', '*speak* a foreign language', '*ride* a motorbike'], kk: 'Бұл етістіктер осы зат есімдермен бірге жүреді.' },
         { lines: ['*earn* a lot of money', '*look after* your health', '*wear* a shirt and tie'], note: 'Don\'t translate word by word.', kk: '«Ақша табу» — earn money (find money емес).' },
         { lines: ['*go* on holiday · *go* by train', '*send* text messages · *watch* films online', '*live* on the third floor'] }
       ] },
-      { type: 'quiz', title: 'Perfect pairs', timer: 15, pts: 100, items: G.BANK.vn, count: 8 },
+      { type: 'memory', kicker: 'Memory', title: 'Find the *pairs*.', kk: 'Етістік пен оның жұбын табыңдар: play — the violin.', pairs: [['play', 'the violin'], ['speak', 'a language'], ['ride', 'a motorbike'], ['wear', 'a shirt and tie'], ['go', 'on holiday'], ['watch', 'films online']] },
       { type: 'explain', kicker: 'Little words', title: 'about · of · to · from · on · at · with · for', beats: [
         { lines: ['worried *about*', 'married *to*', 'proud *of*'], note: 'Some words always take the same preposition.', kk: 'Кейбір сөздерден кейін үнемі бір предлог келеді.' },
         { lines: ['*on* holiday', '*at* work · *at* home', 'Where are you *from*?'], note: 'In questions, the preposition often goes at the end.', kk: 'Сұрақта предлог соңына шығады.' }
       ] },
-      { type: 'quiz', title: 'Little words', timer: 15, pts: 100, items: G.BANK.prep, count: 8 },
+      { type: 'quiz', title: 'Little words', timer: 15, pts: 100, items: G.BANK.prep, count: 5 },
       { type: 'explain', kicker: 'Everyday English', title: 'Can I…? Could you…?', beats: [
         { lines: ['*Can I* have a latte, please?'], note: 'You want something.', kk: 'Өзіңе бір нәрсе керек болғанда — Can I…?' },
         { lines: ['*Could you* open the door, please?'], note: 'Someone does something for you.', kk: 'Біреу саған бір нәрсе істеп бергенде — Could you…?' },
@@ -405,7 +396,7 @@
       ] },
       cafe,
       email,
-      { type: 'quiz', title: 'Final battle · triple points', timer: 15, pts: 300, items: [].concat(G.BANK.can, G.BANK.adv, G.BANK.waswere, G.BANK.could, G.BANK.born, G.BANK.vn, G.BANK.prep, G.BANK.req), count: 12 },
+      { type: 'quiz', title: 'Final battle · triple points', timer: 15, pts: 300, items: [].concat(G.BANK.can, G.BANK.adv, G.BANK.waswere, G.BANK.could, G.BANK.born, G.BANK.vn, G.BANK.prep, G.BANK.req), count: 8 },
       { type: 'recap', rules: ['*bus stop* · *sunglasses*', '*play* the violin', 'worried *about*', '*Can I* …? · *Could you* …?', '*Dear* … · *Yours sincerely*'], starters: ['Today I learned the word …', '*Could you* … , please?', 'In a formal email we write …'], kk: 'Бүгін: бірге жүретін сөздер, предлогтар, сыпайы өтініш және ресми хат.' },
       { type: 'unlock', dark: true, lesson: 'connect', line: 'Connect unlocked.', note: 'Three powers. One group. Time for the awards.', kk: 'Үшінші күш ашылды! Енді → басыңыз — марапаттау басталады.', hint: 'Үш күш те ашылды! → — Super U Awards марапаттауы.' },
       awardsScene

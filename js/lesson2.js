@@ -8,57 +8,46 @@
   const col = () => h('div', { style: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'clamp(12px,2.3vh,26px)', width: '100%' } });
 
   G.BANK.waswere = Q([
-    ['I ___ at school yesterday. I was ill.', ['wasn\'t', 'weren\'t', 'didn\'t'], 'I → *was / wasn\'t*.', 'I → was / wasn\'t.'],
-    ['My parents ___ at work last week. They were on holiday.', ['weren\'t', 'wasn\'t', 'aren\'t'], 'my parents = they → *weren\'t*.', 'my parents = they → weren\'t.'],
-    ['Where ___ you last night?', ['were', 'was', 'did'], 'you → *were*.', 'you → were.'],
-    ['Everyone ___ there — all our friends!', ['was', 'were', 'are'], '*everyone* is singular → was.', 'everyone — жекеше → was.'],
-    ['___ you at Ben\'s party? — Yes, I was.', ['Were', 'Was', 'Did'], 'Question with you → *Were you…?*', 'you-мен сұрақ → Were you…?'],
-    ['There ___ a lot of people at the party.', ['were', 'was', 'be'], 'a lot of people → *were*.', 'a lot of people — көпше → were.'],
-    ['Was it sunny yesterday? — No, it ___.', ['wasn\'t', 'weren\'t', 'didn\'t'], 'Short answer: *No, it wasn\'t.*', 'Қысқа жауап: No, it wasn\'t.'],
-    ['The weather ___ terrible last weekend.', ['was', 'were', 'are'], 'the weather = it → *was*.', 'the weather = it → was.']
+    ['I ___ at home yesterday.', ['was', 'were'], 'I → *was*.', 'I → was.'],
+    ['They ___ at school.', ['were', 'was'], 'they → *were*.', 'they → were.'],
+    ['Where ___ you last night?', ['were', 'was'], 'you → *were*.', 'you → were.'],
+    ['She ___ happy.', ['was', 'were'], 'she → *was*.', 'she → was.'],
+    ['___ you at the party? — Yes, I was.', ['Were', 'Was'], '*Were* you…?', 'Сұрақ: Were you…?'],
+    ['I ___ at school. I was ill. 🤒', ['wasn\'t', 'weren\'t'], 'I → *wasn\'t*.', 'I → wasn\'t.']
   ]);
   G.BANK.could = Q([
-    ['I ___ read when I was five.', ['could', 'can', 'could to'], 'Past ability → *could* + verb.', 'Өткендегі қабілет → could + етістік.'],
-    ['My sister ___ ride a bike until she was seven.', ['couldn\'t', 'could', 'can\'t'], '*until seven* = not before seven → couldn\'t.', 'until — «...-ге дейін»: жетіге дейін алмады.'],
-    ['___ you swim when you were six?', ['Could', 'Can', 'Were'], 'Past question → *Could you…?*', 'Өткен шақ сұрағы → Could you…?'],
-    ['Picasso ___ draw when he was just two.', ['could', 'can', 'was'], 'Past ability → *could*.', 'Өткендегі қабілет → could.'],
-    ['I ___ come to the party. I was ill.', ['couldn\'t', 'can\'t', 'wasn\'t'], 'Past + not able → *couldn\'t*.', 'Өткенде істей алмадым → couldn\'t.'],
-    ['Now I can drive. Five years ago I ___.', ['couldn\'t', 'can\'t', 'wasn\'t'], 'Five years ago → *couldn\'t*.', 'Бес жыл бұрын — couldn\'t.']
+    ['I ___ read when I was five.', ['could', 'can'], 'Past → *could*.', 'Өткен шақ → could.'],
+    ['He ___ swim when he was two. 👶', ['couldn\'t', 'could'], 'A baby *couldn\'t* swim.', 'Сәби жүзе алмады — couldn\'t.'],
+    ['___ you ride a bike when you were six?', ['Could', 'Can'], 'Past → *Could* you…?', 'Өткен шақ → Could you…?'],
+    ['Messi ___ play football when he was five. ⚽', ['could', 'can'], 'Past → *could*.', 'Өткен шақ → could.']
   ]);
   G.BANK.born = Q([
-    ['When ___ you born?', ['were', 'was', 'did'], 'you → *were born*.', 'you → were born.'],
-    ['Which one is correct?', ['I was born in Almaty.', 'I born in Almaty.', 'I am born in Almaty.'], 'Always *was born*.', 'Әрқашан: was born.'],
-    ['John Lennon was born ___ October 9th, 1940.', ['on', 'in', 'at'], 'A date → *on*.', 'Нақты күн → on.'],
-    ['Serena Williams was born ___ 1981.', ['in', 'on', 'at'], 'A year → *in*.', 'Жыл → in.']
+    ['I ___ born in 2009.', ['was', 'am'], 'I *was* born.', 'I was born — мен туылдым.'],
+    ['When ___ you born?', ['were', 'was'], 'you → *were* born.', 'you → were born.'],
+    ['I was born ___ Almaty.', ['in', 'on'], '*in* + city.', 'Қала алдында — in.'],
+    ['I was born ___ May 5th.', ['on', 'in'], '*on* + date.', 'Нақты күн алдында — on.']
   ]);
 
   G.BANK.adj = Q([
-    ['Music lessons cost a lot of money. They are ___.', ['expensive', 'rich', 'proud'], '*expensive* = costs a lot.', 'expensive — қымбат.'],
-    ['Gulnara is very ___ of her children.', ['proud', 'successful', 'normal'], '*proud of* someone.', 'proud of — мақтан тұту.'],
-    ['She looks after the family every day. She is a ___ mum.', ['full-time', 'cool', 'old'], '*full-time* = all day, every day.', 'full-time — толық күн.'],
-    ['They have a lot of money. They are ___.', ['rich', 'expensive', 'talented'], '*rich* = has a lot of money.', 'rich — бай.'],
-    ['The children are very good at music. They are ___.', ['talented', 'normal', 'expensive'], '*talented* = very good at something.', 'talented — дарынды.'],
-    ['They work hard and get great results. They are ___.', ['successful', 'proud', 'old'], '*successful* = good results.', 'successful — табысты.'],
-    ['“For us, playing music is ___!” — it\'s fun and modern.', ['cool', 'expensive', 'full-time'], '*cool* = great, fashionable.', 'cool — керемет, сәнді.'],
-    ['Aruzhan can play the piano ___ — she is amazing!', ['brilliantly', 'brilliant', 'a little bit'], 'Verb + *brilliantly* (adverb). The adjective is *brilliant*.', 'Етістіктен кейін — brilliantly; сын есім — brilliant.']
+    ['🎻 They are very good at music. They are ___.', ['talented', 'expensive'], '*talented* = very good at something.', 'talented — дарынды.'],
+    ['💰 Music lessons cost a lot. They are ___.', ['expensive', 'proud'], '*expensive* = costs a lot.', 'expensive — қымбат.'],
+    ['🥰 Mum is very ___ of her children.', ['proud', 'rich'], '*proud* of.', 'proud of — мақтан тұту.'],
+    ['🏆 They work hard. They are ___.', ['successful', 'normal'], '*successful* = good results.', 'successful — табысты.'],
+    ['😎 Music is ___!', ['cool', 'full-time'], '*cool* = great.', 'cool — керемет.']
   ]);
   const TF = [
-    ['All seven children can play a musical instrument.', true, 'Yes — they can all play an instrument.'],
-    ['Aruzhan can play the piano quite well.', false, 'False — she can play it *brilliantly*.'],
-    ['Timur could play twenty kuis when he was eleven.', true, 'Yes — he *could* already play twenty kuis.'],
-    ['Dana and Arman can sing really well.', false, 'False — they *can\'t* sing at all.'],
-    ['The family was on TV in 2021.', false, 'False — they *were* on TV in 2023.'],
-    ['They were very nervous on the show.', false, 'False — they *weren\'t* nervous. They were really happy.'],
-    ['Their parents are musicians.', false, 'False — Serik is a doctor and Gulnara is a full-time mum.'],
-    ['The children practise for three hours every day.', true, 'Yes — three hours every day.']
+    ['All the children can play music.', true, 'Yes — they can all play music.'],
+    ['Aruzhan can play the piano.', true, 'Yes — she can play it brilliantly.'],
+    ['Dana and Arman can sing really well.', false, 'No — they *can\'t* sing at all.'],
+    ['The family was on TV.', true, 'Yes — they *were* on TV.'],
+    ['The parents are rich.', false, 'No — they *aren\'t* rich.']
   ].map(([q, t, e]) => ({ q, o: ['True ✓', 'False ✗'], a: t ? 0 : 1, e, fixed: true }));
   const READ = [
-    'Meet the Ospanovs from Almaty. There are seven children in the family — four girls and three boys — and they can all play a musical instrument. Aruzhan is nineteen and she can play the piano brilliantly.',
-    'Her brother Timur is seventeen. He can play the dombra and the guitar. When Timur was eleven, he could already play twenty kuis — traditional Kazakh pieces — on the dombra!',
-    'The two youngest children, Dana and Arman, can play the violin quite well, but they can\'t sing at all. “We sound terrible!” laughs Dana.',
-    'In 2023 the family was on the TV show “Kazakhstan Talents”. They weren\'t nervous. “We were really happy,” says Aruzhan. “Millions of people were at home watching us!”',
-    'Their parents, Serik and Gulnara, aren\'t musicians. Serik is a doctor and Gulnara is a full-time mum. “We aren\'t rich, and music lessons are expensive,” says Gulnara. “But the children work very hard. They practise for three hours every day. That\'s why they are successful. I\'m very proud of them.”',
-    'Are they a normal family? “Of course!” says Timur. “We argue about the TV and the bathroom like everyone. And for us, playing music is cool!”'
+    'This is the Ospanov family from Almaty. There are seven children. They can all play music!',
+    'Aruzhan can play the piano brilliantly. Timur can play the dombra. When he was eleven, he could play the guitar too.',
+    'Dana and Arman can play the violin. But they can\'t sing at all! “We sing very badly!” says Dana.',
+    'Last year the family was on TV. They were very happy.',
+    'The parents aren\'t rich. Music lessons are expensive. But the children work hard. They are talented and successful. Mum is very proud of them.'
   ];
 
   /* Time machine: now → 1916 */
@@ -185,12 +174,12 @@
   /* Great talents: guess who */
   const genius = { render(inner, def, api) {
     const P = G.shuffle([
-      { n: 'Lionel Messi', i: 'LM', ico: '⚽', img: 'img/messi.jpg', credit: 'Bryan Berlin · CC BY-SA 4.0', job: 'a footballer', p: 'he', born: 'June 24th, 1987', place: 'Rosario, Argentina', could: 'play football brilliantly', age: 'five', y: 'born 1987' },
-      { n: 'Cristiano Ronaldo', i: 'CR', ico: '⚽', img: 'img/ronaldo.jpg', credit: 'Bryan Berlin · CC BY-SA 4.0', job: 'a footballer', p: 'he', born: 'February 5th, 1985', place: 'Funchal, Portugal', could: 'play football for a local club', age: 'eight', y: 'born 1985' },
-      { n: 'Lamine Yamal', i: 'LY', ico: '⚽', img: 'img/yamal.jpg', credit: 'Bryan Berlin · CC BY-SA 4.0', job: 'a footballer', p: 'he', born: 'July 13th, 2007', place: 'Esplugues de Llobregat, Spain', could: 'play in Barcelona\'s football academy', age: 'just seven', y: 'born 2007' },
-      { n: 'Dimash Kudaibergen', i: 'DK', ico: '🎤', img: 'img/dimash.jpg', credit: 'laura___dear · CC BY-SA 3.0', job: 'a singer', p: 'he', born: 'May 24th, 1994', place: 'Aktobe, Kazakhstan', could: 'sing and play the piano', age: 'a little boy', y: 'born 1994' },
-      { n: 'Elon Musk', i: 'EM', ico: '🚀', img: 'img/musk.jpg', credit: 'Gage Skidmore · CC BY-SA 4.0', job: 'a businessman and engineer', p: 'he', born: 'June 28th, 1971', place: 'Pretoria, South Africa', could: 'write computer games', age: 'twelve', y: 'born 1971' },
-      { n: 'Taylor Swift', i: 'TS', ico: '🎸', img: 'img/swift.png', credit: 'iHeartRadioCA · CC BY 3.0', job: 'a singer and songwriter', p: 'she', born: 'December 13th, 1989', place: 'Pennsylvania, the USA', could: 'write songs', age: 'twelve', y: 'born 1989' }
+      { n: 'Lionel Messi', i: 'LM', ico: '⚽', img: 'img/messi.jpg', credit: 'Bryan Berlin · CC BY-SA 4.0', job: 'a footballer', p: 'he', born: 'June 24th, 1987', place: 'Argentina', could: 'play football brilliantly', age: 'five', y: 'born 1987' },
+      { n: 'Cristiano Ronaldo', i: 'CR', ico: '⚽', img: 'img/ronaldo.jpg', credit: 'Bryan Berlin · CC BY-SA 4.0', job: 'a footballer', p: 'he', born: 'February 5th, 1985', place: 'Portugal', could: 'play football very well', age: 'eight', y: 'born 1985' },
+      { n: 'Lamine Yamal', i: 'LY', ico: '⚽', img: 'img/yamal.jpg', credit: 'Bryan Berlin · CC BY-SA 4.0', job: 'a footballer', p: 'he', born: 'July 13th, 2007', place: 'Spain', could: 'play football very well', age: 'just seven', y: 'born 2007' },
+      { n: 'Dimash Kudaibergen', i: 'DK', ico: '🎤', img: 'img/dimash.jpg', credit: 'laura___dear · CC BY-SA 3.0', job: 'a singer', p: 'he', born: 'May 24th, 1994', place: 'Kazakhstan', could: 'sing and play the piano', age: 'a little boy', y: 'born 1994' },
+      { n: 'Elon Musk', i: 'EM', ico: '🚀', img: 'img/musk.jpg', credit: 'Gage Skidmore · CC BY-SA 4.0', job: 'a businessman', p: 'he', born: 'June 28th, 1971', place: 'South Africa', could: 'write computer games', age: 'twelve', y: 'born 1971' },
+      { n: 'Taylor Swift', i: 'TS', ico: '🎸', img: 'img/swift.png', credit: 'iHeartRadioCA · CC BY 3.0', job: 'a singer and songwriter', p: 'she', born: 'December 13th, 1989', place: 'the USA', could: 'write songs', age: 'twelve', y: 'born 1989' }
     ]);
     const awards = P.map(() => new Set());
     let i = 0, st = 1;
@@ -314,6 +303,7 @@
       ] },
       timeMachine,
       relay,
+      { type: 'standup', items: [['🏠', 'I was at home yesterday.'], ['🏫', 'I was at school yesterday.'], ['🏊', 'I could swim when I was five.'], ['🚲', 'I could ride a bike when I was six.'], ['📖', 'I could read when I was four.'], ['🍰', 'I was born in 2009.']] },
       { type: 'explain', kicker: 'Grammar', title: '*could* — yesterday\'s power.', beats: [
         { lines: ['I *can* swim now.', 'I *could* swim when I was six.'], note: 'can → *could* · can\'t → *couldn\'t*', kk: 'could — can-нің өткен шағы: «істей алатынмын».' },
         { lines: ['She *could* read when she was four.', 'He *couldn\'t* walk until he was two.'], note: '*could* + verb. The same for everyone.', kk: 'Барлық жақта бірдей: could + етістік. until — «...-ге дейін».' },
@@ -321,8 +311,9 @@
         { lines: ['I *was born* in 2009.', 'Picasso *was born* on October 25th, 1881.'], note: 'Never “I born”. *in* + year or city · *on* + date', kk: '«Мен туылдым» — I was born. Жыл, қала алдында — in; нақты күн алдында — on.' }
       ] },
       genius,
-      { type: 'dictation', items: ['Messi could play football when he was five.', 'Dimash was born in Aktobe.', 'Where were you yesterday?', 'I couldn\'t swim when I was five.', 'We were at home last night.'] },
-      { type: 'quiz', title: 'Born to be', timer: 20, pts: 100, items: [].concat(G.BANK.born, G.BANK.could) , count: 6 },
+      { type: 'dictation', items: ['Dimash was born in Aktobe.', 'Where were you yesterday?', 'I could swim when I was five.'] },
+      { type: 'quiz', title: 'Born to be', timer: 20, pts: 100, items: [].concat(G.BANK.born, G.BANK.could) , count: 4 },
+      { type: 'unscramble', items: ['I was born in 2009.', 'Where were you yesterday?', 'I could swim when I was six.', 'They were at home.'] },
       mystery,
       { type: 'read', kicker: 'Reading · A talented family', title: 'Is this the most *talented* family in Kazakhstan?', kk: 'Мәтінді абзац-абзацпен бірге оқимыз. Назар аударыңдар: can, could, was, were.', paras: READ },
       { type: 'quiz', title: 'True or false?', timer: 20, pts: 100, items: TF, shuffle: false },
@@ -335,7 +326,7 @@
       { type: 'task', kicker: 'Pair work · 5 minutes', title: 'Your life. In the past.', note: 'Ask your partner. Then tell the class one surprising thing.', kk: 'Жұбыңнан сұра. Соңында сыныпқа бір қызық дерек айт.', minutes: 5,
         prompts: ['When were you *born*?', 'Where were you *born*?', 'How old were you when you *could* walk?', 'How old were you when you *could* ride a bike?', '*Could* you swim when you were five?', 'Where *were* you at 8.00 this morning?'],
         model: ['When were you born?', 'I was born in 2009, in Turkistan.', 'How old were you when you could ride a bike?', 'I could ride a bike when I was seven.'] },
-      { type: 'boss', dark: true, villain: 'Captain Yesterday', emoji: '🕰️', taunt: 'The past is mine!', items: [].concat(G.BANK.waswere, G.BANK.could, G.BANK.born), count: 8 },
+      { type: 'boss', dark: true, villain: 'Captain Yesterday', emoji: '🕰️', taunt: 'The past is mine!', items: [].concat(G.BANK.waswere, G.BANK.could, G.BANK.born), count: 6 },
       { type: 'recap', rules: ['I *was* · they *were*', 'I *wasn\'t* at school.', 'I *could* read at five.', 'I *was born* in 2009.', '*talented* · *proud* · *successful*'], starters: ['Yesterday I *was* …', 'When I was five, I *could* …', 'I *was born* in … in …'], kk: 'Бүгін: was/were, could/couldn\'t, was born және мәтіндегі сын есімдер.' },
       { type: 'unlock', dark: true, lesson: 'time', line: 'Time unlocked.', note: 'You can travel to the past with was, were and could.', kk: 'Екінші күш ашылды! Енді was, were, could арқылы өткен шақ туралы айта аласың.' }
     ]
