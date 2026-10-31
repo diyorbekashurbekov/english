@@ -146,7 +146,7 @@
       speechSynthesis.cancel();
       const u = new SpeechSynthesisUtterance(G.spoken(text));
       u.lang = voice ? voice.lang : 'en-GB'; if (voice) u.voice = voice;
-      u.rate = o.rate || (voice && /Natural|Google/i.test(voice.name) ? 1 : .92);
+      u.rate = (o.rate ? o.rate / .9 : 1) * (G.S.rate || .75);
       if (o.onend) { u.onend = o.onend; u.onerror = o.onend; }
       speechSynthesis.speak(u); return true;
     } catch (e) { return false; }
@@ -571,6 +571,8 @@
     const voiceBox = h('div', { class: 'reveal', style: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', marginTop: '40px' } },
       h('h3', { style: { fontSize: '28px', letterSpacing: '-.03em' } }, '🔈 Дауыс'),
       h('div', { style: { display: 'flex', gap: '14px', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' } }, voiceSel,
+        h('select', { id: 'rate', 'aria-label': 'Сөйлеу жылдамдығы', onchange: e => { S.rate = +e.target.value; G.save(); G.speak('Hello! I can speak English. Could you help me, please?'); } },
+          [[.55, '🐢 Өте баяу'], [.65, 'Баяу'], [.75, 'Орташа (ұсынылады)'], [.9, 'Жылдам'], [1, 'Табиғи жылдамдық']].map(([v, t]) => h('option', { value: v, selected: (S.rate || .75) === v ? '' : null }, t))),
         h('button', { class: 'pill sm', onclick: () => G.speak('Hello! I can speak English. Could you help me, please?') }, '▶ Тыңдау')),
       voiceNote);
     const teamSec = h('section', { class: 'sec', id: 'teams' }, h('div', { class: 'wrap' },
